@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
 	(options, args) = parser.parse_args()
 	draw_correlation = options.correlation
-	draw_balance = options.balance
+	#draw_balance = options.balance
 	if not(options.distributions is None):
 		distributions = options.distributions.split(",")
 	else:
@@ -144,8 +144,8 @@ if __name__ == '__main__':
 		draw_distributions(hr, continuous_labels, pretty_prints[:3])
 		draw_discrete_distributions(hr, discrete_labels, pretty_prints[3:5], discrete_suffixes)
 	else:
-		discrete_vars = set(sys.argv[1:]).intersection(discrete_labels)
-		continuous_vars = set(sys.argv[1:]).intersection(continuous_labels)
+		discrete_vars = set(distributions).intersection(discrete_labels)
+		continuous_vars = set(distributions).intersection(continuous_labels)
 		for var in discrete_vars:
 			var_pretty_print = labels_pretty_print[var]
 			draw_discrete_distribution(hr, var, var_pretty_print)
