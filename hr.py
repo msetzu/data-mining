@@ -1,8 +1,9 @@
 from optparse import OptionParser
-import sys
 
 import pandas as pd, numpy as np
 import matplotlib.pyplot as pp
+from matplotlib import mlab
+
 from objects import HR
 
 bins = 10
@@ -43,6 +44,11 @@ def draw_discrete_distributions(hr, vars, vars_pretty_print, suffixes):
 		draw_discrete_distribution(hr, var, var_pretty_print, suffix)
 
 
+def draw_categorical_distributions(hr, vars, vars_pretty_print, vars_pretty_print_categories):
+	for var, var_pretty_print, categories in zip(vars, vars_pretty_print, vars_pretty_print_categories):
+		draw_categorical_distribution(hr, var, var_pretty_print, categories)
+
+
 def draw_distribution(hr, var, var_pretty_print):
 	"""
 	Draw the variables' distributions.
@@ -51,14 +57,22 @@ def draw_distribution(hr, var, var_pretty_print):
 	:param var_pretty_print: 	The variable's pretty print name.
 	:return: 					Nothing.
 	"""
-	hr.data[var]
 	var_val = hr.data[var]
+
+	# Fix for last_evaluation
+	if var == "last_evaluation":
+		var_val = list(map(lambda x: x * 365 / 7, var_val))
+
 	var_val_std = hr.std[var]
 	var_val_mean = hr.mean[var]
 	num_bins = int(np.ceil(np.log2(len(var_val))) + 1)
 
 	figure, axes = pp.subplots()
-	axes.hist(var_val, num_bins, label='Data distribution')
+
+	# add a 'best fit' line
+	n, bins, patches = axes.hist(var_val, num_bins, label='Data distribution', normed=1)
+	y = mlab.normpdf(bins, var_val_mean, var_val_std)
+	axes.plot(bins, y, '.-.')
 	axes.set_xlabel(str(var_pretty_print))
 	axes.set_ylabel('Employees')
 	axes.set_title(r'Distribution: $\mu$ =' + format(var_val_std, '.4f') + ', $\sigma$ =' + format(var_val_mean, '.4f'))
@@ -89,6 +103,37 @@ def draw_discrete_distribution(hr, var, var_pretty_print, suffix):
 	axes.set_title(str(var_pretty_print) + " " + str(suffix))
 
 
+def draw_categorical_distribution(hr, var, var_pretty_print, categories):
+	"""
+    Draw the distcrete variables' distributions.
+    :param hr: 					The data object.
+    :param var: 				The variable whose distribution to draw.
+    :param var_pretty_print: 	The variable's pretty print name.
+    :return: 					Nothing.
+    """
+	var_val = list(hr.data[var])
+
+	figure, axes = pp.subplots()
+	x_values = list(set(var_val))
+	x_list = range(len(x_values))
+	x_values.sort()
+	x_values.reverse()
+
+	frequency = list()
+	for year in x_values:
+		frequency.append(var_val.count(year))
+
+	# Some categorical labels are '0', '1'
+	if x_values == [1, 0]:
+		x_values = categories
+
+	pp.bar(x_list, frequency)
+	pp.xticks(x_list, x_values)
+	axes.set_ylabel('Employees')
+	axes.set_title(str(var_pretty_print))
+	pp.setp(axes.get_xticklabels(), rotation=45)
+
+
 def draw_correlation_matrix(correlation_matrix):
 	figure, axes = pp.subplots(1,1)
 	figure.suptitle('Correlation matrix', fontsize=12, fontweight='bold')
@@ -116,12 +161,13 @@ def draw_correlation_matrix(correlation_matrix):
 # Main
 if __name__ == '__main__':
 	labels = ['satisfaction_level', 'last_evaluation', 'average_montly_hours', 'time_spend_company', 'number_project', 'Work_accident', 'left', 'promotion_last_5years', 'sales', 'salary']
-	pretty_prints = ['Self-reported satisfaction', 'Time since last valuation, in years', 'AVG Monthly hours', 'Projects', 'Time in company', 'Accident', 'Left', 'Promoted (5 years)', 'Sales', 'Salary']
+	pretty_prints = ['Self-reported satisfaction', 'Time since last valuation, in weeks', 'AVG Monthly hours', 'Projects', 'Time in company in years', 'Accident', 'Left', 'Promoted (5 years)', 'Sales', 'Salary']
 	labels_pretty_print = {k: v for k, v in zip(labels, pretty_prints)}
 	continuous_labels = labels[0:3]
 	discrete_labels = labels[3:5]
 	discrete_suffixes = ['degree',  '']
 	categorical_labels = labels[5:]
+	categorical_labels_boolean = [('Injured', 'Safe'), ('Left', 'Stayed'), ('Promoted', 'Not promoted')]
 
 	data = pd.read_csv("./hr.csv")
 	hr = HR(data)
@@ -143,9 +189,10 @@ if __name__ == '__main__':
 	if distributions.count("all") > 0:
 		draw_distributions(hr, continuous_labels, pretty_prints[:3])
 		draw_discrete_distributions(hr, discrete_labels, pretty_prints[3:5], discrete_suffixes)
+		draw_categorical_distributions(hr, labels[5:], pretty_prints[5:], categorical_labels_boolean)
 	else:
 		discrete_vars = set(distributions).intersection(discrete_labels)
-		continuous_vars = set(distributions).intersection(continuous_labels)
+		continuous_vars = set(distributions	).intersection(continuous_labels)
 		for var in discrete_vars:
 			var_pretty_print = labels_pretty_print[var]
 			draw_discrete_distribution(hr, var, var_pretty_print)
