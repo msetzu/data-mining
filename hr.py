@@ -78,7 +78,7 @@ def draw_distribution(hr, var, var_pretty_print):
 	axes.tick_params(labelleft='off')
 	axes.set_title(r'Distribution: $\mu$ =' + format(var_val_std, '.4f') + ', $\sigma$ =' + format(var_val_mean, '.4f'))
 	pp.title(str(var_pretty_print) + ': data distribution')
-
+	pp.savefig(str(var_pretty_print) + '.png')
 
 
 def draw_discrete_distribution(hr, var, var_pretty_print, suffix):
@@ -105,7 +105,7 @@ def draw_discrete_distribution(hr, var, var_pretty_print, suffix):
 	axes.set_title(str(var_pretty_print) + " " + str(suffix))
 
 	pp.tight_layout()
-
+	pp.savefig(str(var_pretty_print) + '.png')
 
 
 
@@ -140,7 +140,7 @@ def draw_categorical_distribution(hr, var, var_pretty_print, categories):
 	pp.setp(axes.get_xticklabels(), rotation=45)
 
 	pp.tight_layout()
-
+	pp.savefig(str(var_pretty_print) + '.png')
 
 
 def draw_correlation_matrix(correlation_matrix):
@@ -166,7 +166,7 @@ def draw_correlation_matrix(correlation_matrix):
 	pp.draw()
 
 	pp.tight_layout()
-
+	pp.savefig('Correlation matrix.png')
 
 
 # Main
