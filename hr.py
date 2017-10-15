@@ -75,8 +75,10 @@ def draw_distribution(hr, var, var_pretty_print):
 	axes.plot(bins, y, '.-.')
 	axes.set_xlabel(str(var_pretty_print))
 	axes.set_ylabel('Employees')
+	axes.tick_params(labelleft='off')
 	axes.set_title(r'Distribution: $\mu$ =' + format(var_val_std, '.4f') + ', $\sigma$ =' + format(var_val_mean, '.4f'))
 	pp.title(str(var_pretty_print) + ': data distribution')
+
 
 
 def draw_discrete_distribution(hr, var, var_pretty_print, suffix):
@@ -101,6 +103,10 @@ def draw_discrete_distribution(hr, var, var_pretty_print, suffix):
 	axes.set_xticks(x_values)
 	axes.set_ylabel('Employees')
 	axes.set_title(str(var_pretty_print) + " " + str(suffix))
+
+	pp.tight_layout()
+
+
 
 
 def draw_categorical_distribution(hr, var, var_pretty_print, categories):
@@ -133,6 +139,9 @@ def draw_categorical_distribution(hr, var, var_pretty_print, categories):
 	axes.set_title(str(var_pretty_print))
 	pp.setp(axes.get_xticklabels(), rotation=45)
 
+	pp.tight_layout()
+
+
 
 def draw_correlation_matrix(correlation_matrix):
 	figure, axes = pp.subplots(1,1)
@@ -154,8 +163,10 @@ def draw_correlation_matrix(correlation_matrix):
 	# Hide borders
 	axes.spines['top'].set_visible(False)
 	axes.spines['right'].set_visible(False)
-
 	pp.draw()
+
+	pp.tight_layout()
+
 
 
 # Main
