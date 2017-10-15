@@ -15,3 +15,6 @@ Ex.
 $ python hr.py -d all
 $ python hr.py -d satisfaction_level,last_evaluation
 ```
+
+### Save to file
+The script automatically saves the plotted graphs in the working directory with a `.png` extension.
