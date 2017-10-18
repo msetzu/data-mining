@@ -1,5 +1,10 @@
 class HR:
-	def __init__(self, data):
+	def __init__(self, data, normalised=False):
+		"""
+		Constructor.
+		:param data:		The pandas dataframe to use to construct the object.
+		:param normalised: 	If True, data.normalised contains a normalised version of the data columns.
+		"""
 		self.data = {}
 		self.data["satisfaction_level"] = data["satisfaction_level"]
 		self.data["last_evaluation"] = data["last_evaluation"]
@@ -31,3 +36,16 @@ class HR:
 		self.mean["Work_accident"] = self.data["Work_accident"].mean()
 		self.mean["left"] = self.data["left"].mean()
 		self.mean["promotion_last_5years"] = self.data["promotion_last_5years"].mean()
+
+		self.normalised = {}
+		self.normalised["satisfaction_level"] = (data["satisfaction_level"] - data[
+			"satisfaction_level"].mean()) / data["satisfaction_level"].mean()
+		self.normalised["last_evaluation"] = (data["last_evaluation"] - data["last_evaluation"].mean()) / data["last_evaluation"].mean()
+		self.normalised["number_project"] = (data["number_project"] - data["number_project"].mean()) / data["number_project"].mean()
+		self.normalised["average_montly_hours"] = (data["average_montly_hours"] - data["average_montly_hours"].mean()) / data["average_montly_hours"].mean()
+		self.normalised["time_spend_company"] = (data["time_spend_company"] - data["time_spend_company"].mean()) / data["time_spend_company"].mean()
+		self.normalised["Work_accident"] = data["Work_accident"]
+		self.normalised["left"] = data["left"]
+		self.normalised["promotion_last_5years"] = data["promotion_last_5years"]
+		self.normalised["sales"] = data["sales"]
+		self.normalised["salary"] = data["salary"]
