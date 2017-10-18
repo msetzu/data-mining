@@ -1,10 +1,10 @@
 from optparse import OptionParser
-
 import pandas as pd, numpy as np
 import matplotlib.pyplot as pp
 from matplotlib import mlab
 
 from objects import HR
+from settings import colors, cmap_pale_pink
 
 bins = 10
 data_balance_treshold = 0.05
@@ -39,9 +39,9 @@ def draw_distributions(hr, vars, vars_pretty_print):
 		draw_distribution(hr, var, var_pretty_print)
 
 
-def draw_discrete_distributions(hr, vars, vars_pretty_print, suffixes):
-	for var, var_pretty_print, suffix in zip(vars, vars_pretty_print, suffixes):
-		draw_discrete_distribution(hr, var, var_pretty_print, suffix)
+def draw_discrete_distributions(hr, vars, vars_pretty_print, ):
+	for var, var_pretty_print, in zip(vars, vars_pretty_print):
+		draw_discrete_distribution(hr, var, var_pretty_print)
 
 
 def draw_categorical_distributions(hr, vars, vars_pretty_print, vars_pretty_print_categories):
@@ -70,25 +70,24 @@ def draw_distribution(hr, var, var_pretty_print):
 	figure, axes = pp.subplots()
 
 	# add a 'best fit' line
-	n, bins, patches = axes.hist(var_val, num_bins, label='Data distribution', normed=1)
-	y = mlab.normpdf(bins, var_val_mean, var_val_std)
-	axes.plot(bins, y, '.-.')
+	n, bins, patches = axes.hist(var_val, num_bins, label='Data distribution', color=colors['main'], normed=False)
+	y = mlab.normpdf(bins, var_val_mean, var_val_std) * sum(n * np.diff(bins))
+	axes.plot(bins, y, '.-.', color=colors['secondary'])
 	axes.set_xlabel(str(var_pretty_print))
 	axes.set_ylabel('Employees')
-	axes.tick_params(labelleft='off')
 	axes.set_title(r'Distribution: $\mu$ =' + format(var_val_std, '.4f') + ', $\sigma$ =' + format(var_val_mean, '.4f'))
 	pp.title(str(var_pretty_print) + ': data distribution')
 	pp.savefig(str(var_pretty_print) + '.png')
 
 
-def draw_discrete_distribution(hr, var, var_pretty_print, suffix):
+def draw_discrete_distribution(hr, var, var_pretty_print):
 	"""
-    Draw the distcrete variables' distributions.
-    :param hr: 					The data object.
-    :param var: 				The variable whose distribution to draw.
-    :param var_pretty_print: 	The variable's pretty print name.
-    :return: 					Nothing.
-    """
+	Draw the distcrete variables' distributions.
+	:param hr: 					The data object.
+	:param var: 				The variable whose distribution to draw.
+	:param var_pretty_print: 	The variable's pretty print name.
+	:return: 					Nothing.
+	"""
 	var_val = list(hr.data[var])
 
 	figure, axes = pp.subplots()
@@ -99,24 +98,23 @@ def draw_discrete_distribution(hr, var, var_pretty_print, suffix):
 	for year in x_values:
 		frequency.append(var_val.count(year))
 
-	pp.bar(x_values, frequency)
+	pp.bar(x_values, frequency, color=colors['main'])
 	axes.set_xticks(x_values)
 	axes.set_ylabel('Employees')
-	axes.set_title(str(var_pretty_print) + " " + str(suffix))
+	axes.set_title(str(var_pretty_print))
 
 	pp.tight_layout()
 	pp.savefig(str(var_pretty_print) + '.png')
 
 
-
 def draw_categorical_distribution(hr, var, var_pretty_print, categories):
 	"""
-    Draw the distcrete variables' distributions.
-    :param hr: 					The data object.
-    :param var: 				The variable whose distribution to draw.
-    :param var_pretty_print: 	The variable's pretty print name.
-    :return: 					Nothing.
-    """
+	Draw the distcrete variables' distributions.
+	:param hr: 					The data object.
+	:param var: 				The variable whose distribution to draw.
+	:param var_pretty_print: 	The variable's pretty print name.
+	:return: 					Nothing.
+	"""
 	var_val = list(hr.data[var])
 
 	figure, axes = pp.subplots()
@@ -133,89 +131,99 @@ def draw_categorical_distribution(hr, var, var_pretty_print, categories):
 	if x_values == [1, 0]:
 		x_values = categories
 
-	pp.bar(x_list, frequency)
+	bars = pp.bar(x_list, frequency)
+	bars[0].set_color(colors['main'])
+	bars[1].set_color(colors['secondary'])
 	pp.xticks(x_list, x_values)
 	axes.set_ylabel('Employees')
 	axes.set_title(str(var_pretty_print))
-	pp.setp(axes.get_xticklabels(), rotation=45)
+	axes.set_xticklabels(axes.get_xticklabels, rotation=15, ha='left')
+	#pp.setp(axes.get_xticklabels(), rotation=15)
 
 	pp.tight_layout()
 	pp.savefig(str(var_pretty_print) + '.png')
 
 
-def draw_correlation_matrix(correlation_matrix):
-	figure, axes = pp.subplots(1,1)
-	figure.suptitle('Correlation matrix', fontsize=12, fontweight='bold')
-	
-	image = axes.imshow(correlation_matrix, cmap="Blues", vmin=0, vmax=0.5)
+def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False):
+	figure, axes = pp.subplots(1, 1)
+
+	#image = axes.imshow(correlation_matrix, cmap=cmap_pale_pink, vmin=0, vmax=0.5)
+	mask = np.tri(correlation_matrix.shape[0], k=-1)
+	matrix = np.ma.array(correlation_matrix, mask=mask)  # mask out the lower triangle
+	cmap_pale_pink.set_bad('w')
+	image = axes.imshow(matrix, cmap=cmap_pale_pink)
 	pp.colorbar(image)
 
 	# Add labels, slightly modify for graph purposes
-	labels = ['satisfaction','last evaluation','projects','hours (monthly)','employment time','accidents','left','recent promotions','sales','salary']
-	axes.set_xticks(np.arange(0,correlation_matrix.shape[0], correlation_matrix.shape[0]*1.0/len(labels)))
-	axes.set_yticks(np.arange(0,correlation_matrix.shape[1], correlation_matrix.shape[1]*1.0/len(labels)))
-	axes.set_xticklabels(labels)
-	axes.set_yticklabels(labels)
-	
+	axes.set_xticks(np.arange(0, correlation_matrix.shape[0], correlation_matrix.shape[0] * 1.0 / len(pretty_labels)))
+	axes.set_yticks(np.arange(0, correlation_matrix.shape[1], correlation_matrix.shape[1] * 1.0 / len(pretty_labels)))
+	axes.set_xticklabels(pretty_labels)
+	axes.set_yticklabels(pretty_labels)
+
 	# Adjust axes rotation
-	pp.setp(axes.get_xticklabels(), rotation=45)
+	axes.set_xticklabels(pretty_labels, rotation=45, ha='right')
 
 	# Hide borders
 	axes.spines['top'].set_visible(False)
 	axes.spines['right'].set_visible(False)
 	pp.draw()
 
-	pp.tight_layout()
-	pp.savefig('Correlation matrix.png')
+	#pp.tight_layout()
+
+	if not(normalised):
+		figure.suptitle('Correlation matrix', fontsize=12, fontweight='bold')
+		pp.savefig('Correlation matrix.png')
+	else:
+		figure.suptitle('Correlation matrix for normalised data', fontsize=12, fontweight='bold')
+		pp.savefig('Correlation matrix for normalised data.png')
 
 
 # Main
 if __name__ == '__main__':
-	labels = ['satisfaction_level', 'last_evaluation', 'average_montly_hours', 'time_spend_company', 'number_project', 'Work_accident', 'left', 'promotion_last_5years', 'sales', 'salary']
-	pretty_prints = ['Self-reported satisfaction', 'Time since last valuation, in weeks', 'AVG Monthly hours', 'Projects', 'Time in company in years', 'Accident', 'Left', 'Promoted (5 years)', 'Sales', 'Salary']
+	labels = ['satisfaction_level', 'last_evaluation', 'average_montly_hours', 'time_spend_company', 'number_project',
+			  'Work_accident', 'left', 'promotion_last_5years', 'sales', 'salary']
+	pretty_prints = ['Self-reported satisfaction', 'Time since last valuation, in weeks', 'AVG Monthly hours',
+					 'Time in company in years', 'Projects', 'Accident', 'Left', 'Promoted (5 years)', 'Sales',
+					 'Salary']
 	labels_pretty_print = {k: v for k, v in zip(labels, pretty_prints)}
 	continuous_labels = labels[0:3]
 	discrete_labels = labels[3:5]
-	discrete_suffixes = ['degree',  '']
 	categorical_labels = labels[5:]
 	categorical_labels_boolean = [('Injured', 'Safe'), ('Left', 'Stayed'), ('Promoted', 'Not promoted')]
 
 	data = pd.read_csv("./hr.csv")
-	hr = HR(data)
+	hr = HR(data, normalised=True)
 
 	parser = OptionParser()
 	parser.add_option("-d", "--distribution", dest="distributions",
 					  help="List distributions to plot, comma separated", metavar="DISTRIBUTIONS")
 	parser.add_option("--correlation", action="store_true", dest="correlation")
-	#parser.add_option("--balance", action="store_true", dest="balance")
 
 	(options, args) = parser.parse_args()
 	draw_correlation = options.correlation
-	#draw_balance = options.balance
-	if not(options.distributions is None):
+
+	if not (options.distributions is None):
 		distributions = options.distributions.split(",")
 	else:
 		distributions = list()
 
 	if distributions.count("all") > 0:
 		draw_distributions(hr, continuous_labels, pretty_prints[:3])
-		draw_discrete_distributions(hr, discrete_labels, pretty_prints[3:5], discrete_suffixes)
+		draw_discrete_distributions(hr, discrete_labels, pretty_prints[3:5])
 		draw_categorical_distributions(hr, labels[5:], pretty_prints[5:], categorical_labels_boolean)
 	else:
 		discrete_vars = set(distributions).intersection(discrete_labels)
-		continuous_vars = set(distributions	).intersection(continuous_labels)
+		continuous_vars = set(distributions).intersection(continuous_labels)
 		for var in discrete_vars:
 			var_pretty_print = labels_pretty_print[var]
-			draw_discrete_distribution(hr, var, var_pretty_print)
+			draw_discrete_distribution(hr, var)
 		for var in continuous_vars:
 			var_pretty_print = labels_pretty_print[var]
 			draw_distribution(hr, var, var_pretty_print)
 
 	if draw_correlation:
-		draw_correlation_matrix(np.tril(data.corr()))
-
-	# if draw_balance:
-	# 	for feature, feature_pretty_print in zip(labels, labels_pretty_print):
-	# 		data_balance(hr, feature, feature_pretty_print)
+		normalised_data = pd.DataFrame(hr.normalised)
+		draw_correlation_matrix(data.corr(), pretty_prints)
+		draw_correlation_matrix(normalised_data.corr(), pretty_prints, normalised=True)
 
 	pp.show()
