@@ -8,6 +8,9 @@
 # Pycharm
 .idea/
 
+# Graphs
+*.png
+
 # Created by https://www.gitignore.io/api/pycharm
 
 ### PyCharm ###
