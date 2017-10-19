@@ -4,7 +4,7 @@ import matplotlib.pyplot as pp
 from matplotlib import mlab
 
 from objects import HR
-from settings import colors, cmap_pale_pink
+from settings import colors, cmap_pale_pink, cmap_pale_pink_and_green
 
 bins = 10
 data_balance_treshold = 0.05
@@ -137,8 +137,7 @@ def draw_categorical_distribution(hr, var, var_pretty_print, categories):
 	pp.xticks(x_list, x_values)
 	axes.set_ylabel('Employees')
 	axes.set_title(str(var_pretty_print))
-	axes.set_xticklabels(axes.get_xticklabels, rotation=15, ha='left')
-	#pp.setp(axes.get_xticklabels(), rotation=15)
+	axes.set_xticklabels(axes.get_xticklabels(), rotation=45, ha='right')
 
 	pp.tight_layout()
 	pp.savefig(str(var_pretty_print) + '.png')
@@ -176,6 +175,38 @@ def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False)
 	else:
 		figure.suptitle('Correlation matrix for normalised data', fontsize=12, fontweight='bold')
 		pp.savefig('Correlation matrix for normalised data.png')
+
+
+#def draw_scatter_plots(hr, vars, vars_pretty_print):
+
+
+def sample(values, k, bins, bin_labels, samples_number, replace=False, coverage={}):
+	"""
+	Sample the given dataframe var for a sample of size k from equi-width bins.
+	:param var: 		The dataframe to sample.
+	:param k: 			The sample size.
+	:param bins:		The number of bins where to extract from.
+	:param bin_labels:	The bins labels to build the returned dictionary.
+	:return: 			A dictionary {bin_label: {([sample_1], bin_size),...,([sample_k], bin_size)}}
+	"""
+	unique_values = values.drop_duplicates()
+	retbins = (pd.cut(unique_values, bins=bins, retbins=True, labels=list(map(str,range(bins)))))[0]
+	value_bin = list(zip(retbins, unique_values))
+	samples = {}
+
+	for bin in bin_labels:
+		bin_values = (pd.DataFrame(list(filter(lambda x: x[0] == bin, value_bin))))[1]
+		buckets = list()
+
+		for i in range(samples_number):
+			sample = list(bin_values.sample(k, replace=replace))
+			buckets.append(sample)
+
+		samples[bin] = buckets
+		coverage[bin] = bin_values.size
+
+
+	return samples
 
 
 # Main
@@ -216,7 +247,7 @@ if __name__ == '__main__':
 		continuous_vars = set(distributions).intersection(continuous_labels)
 		for var in discrete_vars:
 			var_pretty_print = labels_pretty_print[var]
-			draw_discrete_distribution(hr, var)
+			draw_discrete_distribution(hr, var, var_pretty_print)
 		for var in continuous_vars:
 			var_pretty_print = labels_pretty_print[var]
 			draw_distribution(hr, var, var_pretty_print)
