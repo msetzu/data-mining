@@ -48,6 +48,18 @@ def draw_categorical_distributions(hr, vars, vars_pretty_print, vars_pretty_prin
 	for var, var_pretty_print, categories in zip(vars, vars_pretty_print, vars_pretty_print_categories):
 		draw_categorical_distribution(hr, var, var_pretty_print, categories)
 
+def draw_scatter_plot(var1, var2 ):
+
+    figure, axes = pp.subplots()
+    axes.scatter(var1, var2)
+    axes.set_xlabel(var1)
+    axes.set_ylabel(var2)
+    axes.set_title('scatter plot')
+    pp.title('scatter'+var1+var2)
+    pp.savefig('scatter'+var1+var2+'.png')
+    # add a 'best fit' lin
+    #pp.scatter(var1, var2)
+    #pp.show
 
 def draw_distribution(hr, var, var_pretty_print):
 	"""
@@ -61,8 +73,17 @@ def draw_distribution(hr, var, var_pretty_print):
 
 	# Fix for last_evaluation
 	if var == "last_evaluation":
-		var_val = list(map(lambda x: x * 365 / 7, var_val))
+		c = []
+		for i in range(len(var_val)):
+			c.append(int(round(hr.data["time_spend_company"][i] * var_val[i])))
+			i += 1
+		var_val = c
+		draw_scatter_plot(hr.data["time_spend_company"], var_val)
+		draw_scatter_plot(hr.data["time_spend_company"], var_val)
 
+	# add a 'best fit' lin
+	#pp.scatter(var1, var2)
+	#pp.showval)
 	var_val_std = hr.std[var]
 	var_val_mean = hr.mean[var]
 	num_bins = int(np.ceil(np.log2(len(var_val))) + 1)
@@ -150,7 +171,7 @@ def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False)
 	mask = np.tri(correlation_matrix.shape[0], k=-1)
 	matrix = np.ma.array(correlation_matrix, mask=mask)  # mask out the lower triangle
 	cmap_pale_pink.set_bad('w')
-	image = axes.imshow(matrix, cmap=cmap_pale_pink)
+	image = axes.imshow(matrix, cmap=cmap_pale_pink, interpolation='none')
 	pp.colorbar(image)
 
 	# Add labels, slightly modify for graph purposes
@@ -232,6 +253,10 @@ if __name__ == '__main__':
 
 	(options, args) = parser.parse_args()
 	draw_correlation = options.correlation
+	draw_scatter_plot(hr.data["number_project"], hr.data["time_spend_company"])
+	normalised_data = pd.DataFrame(hr.normalised)
+	draw_correlation_matrix(data.corr(), pretty_prints)
+	draw_correlation_matrix(normalised_data.corr(), pretty_prints, normalised=True)
 
 	if not (options.distributions is None):
 		distributions = options.distributions.split(",")
