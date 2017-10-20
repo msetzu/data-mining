@@ -48,18 +48,6 @@ def draw_categorical_distributions(hr, vars, vars_pretty_print, vars_pretty_prin
 	for var, var_pretty_print, categories in zip(vars, vars_pretty_print, vars_pretty_print_categories):
 		draw_categorical_distribution(hr, var, var_pretty_print, categories)
 
-def draw_scatter_plot(var1, var2 ):
-
-    figure, axes = pp.subplots()
-    axes.scatter(var1, var2)
-    axes.set_xlabel(var1)
-    axes.set_ylabel(var2)
-    axes.set_title('scatter plot')
-    pp.title('scatter'+var1+var2)
-    pp.savefig('scatter'+var1+var2+'.png')
-    # add a 'best fit' lin
-    #pp.scatter(var1, var2)
-    #pp.show
 
 def draw_distribution(hr, var, var_pretty_print):
 	"""
@@ -78,8 +66,11 @@ def draw_distribution(hr, var, var_pretty_print):
 			c.append(int(round(hr.data["time_spend_company"][i] * var_val[i])))
 			i += 1
 		var_val = c
-		draw_scatter_plot(hr.data["time_spend_company"], var_val)
-		draw_scatter_plot(hr.data["time_spend_company"], var_val)
+		hr.discretize["last_evaluation"] = c
+		vars = ['time_spend_company', 'last_evaluation']
+		vars_pretty_print = ['years in company', 'last evaluation']
+		draw_scatter_plots(hr, vars, vars_pretty_print)
+
 
 	# add a 'best fit' lin
 	#pp.scatter(var1, var2)
@@ -198,7 +189,39 @@ def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False)
 		pp.savefig('Correlation matrix for normalised data.png')
 
 
-#def draw_scatter_plots(hr, vars, vars_pretty_print):
+def draw_scatter_plots(hr, vars, vars_pretty_print):
+	"""
+	Draw the scatter plot of the two variables.
+	:param hr: 					The data object.
+	:param vars: 				The variables for the scatter plot.
+	:param vars_pretty_print: 	The variables' pretty print name.
+	:return: 					Nothing.
+	:Note: For the discretized features there is a hr.discretize in objects. For now only last_eval (but who knows)
+	"""
+	var_val1 = hr.data[vars[0]]
+	var_val2 = hr.data[vars[1]]
+
+	# Fix for last_evaluation
+	if vars[0] == "last_evaluation":
+		var_val1 = hr.discretize["last_evaluation"]
+
+	if vars[1] == "last_evaluation":
+		var_val2 = hr.discretize["last_evaluation"]
+
+
+	figure, axes = pp.subplots()
+
+	# add a 'best fit' line
+	#n, bins, patches = axes.hist(var_val, num_bins, label='Scatter Plot', color=colors['main'], normed=False)
+	#y = mlab.normpdf(bins, var_val_mean, var_val_std) * sum(n * np.diff(bins))
+	axes.scatter(var_val1, var_val2)
+	axes.set_xlabel(str(vars_pretty_print[0]))
+	axes.set_ylabel(str(vars_pretty_print[1]))
+	#axes.set_title(r'Scatter plot: '+var_val1+var_val2)
+	pp.title(str(vars_pretty_print[0])+str(vars_pretty_print[1]) + 'scatter')
+	pp.savefig(str(vars_pretty_print[0])+str(vars_pretty_print[1]) + '.png')
+
+
 
 
 def sample(values, k, bins, bin_labels, samples_number, replace=False, coverage={}):
@@ -251,12 +274,9 @@ if __name__ == '__main__':
 					  help="List distributions to plot, comma separated", metavar="DISTRIBUTIONS")
 	parser.add_option("--correlation", action="store_true", dest="correlation")
 
+	
 	(options, args) = parser.parse_args()
 	draw_correlation = options.correlation
-	draw_scatter_plot(hr.data["number_project"], hr.data["time_spend_company"])
-	normalised_data = pd.DataFrame(hr.normalised)
-	draw_correlation_matrix(data.corr(), pretty_prints)
-	draw_correlation_matrix(normalised_data.corr(), pretty_prints, normalised=True)
 
 	if not (options.distributions is None):
 		distributions = options.distributions.split(",")

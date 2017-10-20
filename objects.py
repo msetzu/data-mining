@@ -49,3 +49,6 @@ class HR:
 		self.normalised["promotion_last_5years"] = data["promotion_last_5years"]
 		self.normalised["sales"] = data["sales"]
 		self.normalised["salary"] = data["salary"]
+
+		self.discretize = {}
+		self.discretize["last_evaluation"] = data["last_evaluation"]
