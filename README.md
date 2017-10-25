@@ -14,7 +14,11 @@ Ex.
 ```
 $ python hr.py -d all
 $ python hr.py -d satisfaction_level,last_evaluation
+$ python hr.py --correlation
 ```
 
 ### Save to file
 The script automatically saves the plotted graphs in the working directory with a `.png` extension.
+
+### Teamwork
+In order to collaborate create a branch with your name. In order to add a feature/plot relevant to one of the project section either add it to the existing file or create one of your own, if it does not exist. For instance, plots and features relevant to the data analysis section go to `analysis.py`, future clustering functions will go to `clustering.py` and so on.
