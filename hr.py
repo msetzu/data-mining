@@ -1,10 +1,9 @@
 from optparse import OptionParser
-import pandas as pd, numpy as np
-import matplotlib.pyplot as pp
 from matplotlib import mlab
 
+from analysis import *
+from settings import *
 from objects import HR
-from settings import colors, cmap_pale_pink, cmap_pale_pink_and_green
 
 bins = 10
 data_balance_treshold = 0.05
@@ -39,14 +38,14 @@ def draw_distributions(hr, vars, vars_pretty_print):
 		draw_distribution(hr, var, var_pretty_print)
 
 
-def draw_discrete_distributions(hr, vars, vars_pretty_print, ):
+def draw_discrete_distributions(hr, vars, vars_pretty_print):
 	for var, var_pretty_print, in zip(vars, vars_pretty_print):
-		draw_discrete_distribution(hr, var, var_pretty_print)
+		draw_discrete_distribution(hr, var, var_pretty_print, labels_pretty_print[var])
 
 
-def draw_categorical_distributions(hr, vars, vars_pretty_print, vars_pretty_print_categories):
-	for var, var_pretty_print, categories in zip(vars, vars_pretty_print, vars_pretty_print_categories):
-		draw_categorical_distribution(hr, var, var_pretty_print, categories)
+def draw_categorical_distributions(hr, vars, vars_pretty_prints):
+	for var, var_pretty_print in zip(vars, vars_pretty_prints):
+		draw_categorical_distribution(hr, var, categorical_labels_pretty_prints[var_pretty_print], labels_pretty_print[var])
 
 
 def draw_distribution(hr, var, var_pretty_print):
@@ -57,34 +56,17 @@ def draw_distribution(hr, var, var_pretty_print):
 	:param var_pretty_print: 	The variable's pretty print name.
 	:return: 					Nothing.
 	"""
-	var_val = hr.data[var]
-
-	# Fix for last_evaluation
-	if var == "last_evaluation":
-		c = []
-		for i in range(len(var_val)):
-			c.append(int(round(hr.data["time_spend_company"][i] * var_val[i])))
-			i += 1
-		var_val = c
-		hr.discretize["last_evaluation"] = c
-		vars = ['time_spend_company', 'last_evaluation']
-		vars_pretty_print = ['years in company', 'last evaluation']
-		draw_scatter_plots(hr, vars, vars_pretty_print)
-
-
-	# add a 'best fit' lin
-	#pp.scatter(var1, var2)
-	#pp.showval)
+	var_val = list(hr.data[var])
 	var_val_std = hr.std[var]
 	var_val_mean = hr.mean[var]
 	num_bins = int(np.ceil(np.log2(len(var_val))) + 1)
 
 	figure, axes = pp.subplots()
 
-	# add a 'best fit' line
-	n, bins, patches = axes.hist(var_val, num_bins, label='Data distribution', color=colors['main'], normed=False)
+	n, bins, patches = axes.hist(var_val, num_bins, label='Data distribution', color=palette['main'], normed=False)
 	y = mlab.normpdf(bins, var_val_mean, var_val_std) * sum(n * np.diff(bins))
-	axes.plot(bins, y, '.-.', color=colors['secondary'])
+
+	axes.plot(bins, y, '.-.', color=palette['secondary'])
 	axes.set_xlabel(str(var_pretty_print))
 	axes.set_ylabel('Employees')
 	axes.set_title(r'Distribution: $\mu$ =' + format(var_val_std, '.4f') + ', $\sigma$ =' + format(var_val_mean, '.4f'))
@@ -92,86 +74,82 @@ def draw_distribution(hr, var, var_pretty_print):
 	pp.savefig(str(var_pretty_print) + '.png')
 
 
-def draw_discrete_distribution(hr, var, var_pretty_print):
+def draw_categorical_distribution(hr, var, var_pretty_prints, title):
 	"""
 	Draw the distcrete variables' distributions.
 	:param hr: 					The data object.
 	:param var: 				The variable whose distribution to draw.
-	:param var_pretty_print: 	The variable's pretty print name.
+	:param var_pretty_prints: 	The variable's pretty print name.
 	:return: 					Nothing.
 	"""
 	var_val = list(hr.data[var])
 
 	figure, axes = pp.subplots()
 	x_values = list(set(var_val))
-	x_values.sort()
-
-	frequency = list()
-	for year in x_values:
-		frequency.append(var_val.count(year))
-
-	pp.bar(x_values, frequency, color=colors['main'])
-	axes.set_xticks(x_values)
-	axes.set_ylabel('Employees')
-	axes.set_title(str(var_pretty_print))
-
-	pp.tight_layout()
-	pp.savefig(str(var_pretty_print) + '.png')
-
-
-def draw_categorical_distribution(hr, var, var_pretty_print, categories):
-	"""
-	Draw the distcrete variables' distributions.
-	:param hr: 					The data object.
-	:param var: 				The variable whose distribution to draw.
-	:param var_pretty_print: 	The variable's pretty print name.
-	:return: 					Nothing.
-	"""
-	var_val = list(hr.data[var])
-
-	figure, axes = pp.subplots()
-	x_values = list(set(var_val))
-	x_list = range(len(x_values))
+	x_ticks = range(len(x_values))
 	x_values.sort()
 	x_values.reverse()
 
 	frequency = list()
-	for year in x_values:
-		frequency.append(var_val.count(year))
+	for x in x_values:
+		frequency.append(var_val.count(x))
 
-	# Some categorical labels are '0', '1'
 	if x_values == [1, 0]:
-		x_values = categories
+		x_ticks = list(var_pretty_prints)
+		frequency.reverse()
 
-	bars = pp.bar(x_list, frequency)
-	bars[0].set_color(colors['main'])
-	bars[1].set_color(colors['secondary'])
-	pp.xticks(x_list, x_values)
+	bars = pp.bar(x_ticks, frequency)
+	bars[0].set_color(palette["main"])
+	bars[1].set_color(palette["secondary"])
+	axes.set_ylabel("Employees")
+	axes.set_title(str(title))
+	axes.set_xticklabels(x_ticks)
+	pp.title(title)
+
+	pp.tight_layout()
+	pp.savefig(str(title) + '.png')
+
+
+def draw_discrete_distribution(hr, var, var_pretty_print, title):
+	"""
+	Draw the distcrete variables' distributions.
+	:param hr: 					The data object.
+	:param var: 				The variable whose distribution to draw.
+	:param var_pretty_print: 	The variable's pretty print name.
+	:return: 					Nothing.
+	"""
+	var_val = list(hr.discrete[var])
+
+	figure, axes = pp.subplots()
+	x_values = list(set(var_val))
+	x_values.sort()
+
+	frequency = list()
+	for x in x_values:
+		frequency.append(var_val.count(x))
+
+	pp.bar(x_values, frequency, color=palette['main'])
+	axes.set_xticks(x_values)
 	axes.set_ylabel('Employees')
-	axes.set_title(str(var_pretty_print))
-	axes.set_xticklabels(axes.get_xticklabels(), rotation=45, ha='right')
+	axes.set_title(str(title))
 
 	pp.tight_layout()
 	pp.savefig(str(var_pretty_print) + '.png')
 
 
 def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False):
-	figure, axes = pp.subplots(1, 1)
+	figure, axes = pp.subplots()
 
-	#image = axes.imshow(correlation_matrix, cmap=cmap_pale_pink, vmin=0, vmax=0.5)
 	mask = np.tri(correlation_matrix.shape[0], k=-1)
 	matrix = np.ma.array(correlation_matrix, mask=mask)  # mask out the lower triangle
 	cmap_pale_pink.set_bad('w')
 	image = axes.imshow(matrix, cmap=cmap_pale_pink, interpolation='none')
 	pp.colorbar(image)
 
-	# Add labels, slightly modify for graph purposes
 	axes.set_xticks(np.arange(0, correlation_matrix.shape[0], correlation_matrix.shape[0] * 1.0 / len(pretty_labels)))
 	axes.set_yticks(np.arange(0, correlation_matrix.shape[1], correlation_matrix.shape[1] * 1.0 / len(pretty_labels)))
 	axes.set_xticklabels(pretty_labels)
 	axes.set_yticklabels(pretty_labels)
-
-	# Adjust axes rotation
 	axes.set_xticklabels(pretty_labels, rotation=45, ha='right')
 
 	# Hide borders
@@ -179,17 +157,15 @@ def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False)
 	axes.spines['right'].set_visible(False)
 	pp.draw()
 
-	#pp.tight_layout()
-
 	if not(normalised):
-		figure.suptitle('Correlation matrix', fontsize=12, fontweight='bold')
+		axes.set_title('Correlation matrix', fontsize=12, fontweight='bold')
 		pp.savefig('Correlation matrix.png')
 	else:
-		figure.suptitle('Correlation matrix for normalised data', fontsize=12, fontweight='bold')
+		axes.set_title('Correlation matrix', fontsize=12, fontweight='bold')
 		pp.savefig('Correlation matrix for normalised data.png')
 
 
-def draw_scatter_plots(hr, vars, vars_pretty_print):
+def draw_scatter_plot(hr, var_x, var_y, vars_pretty_print):
 	"""
 	Draw the scatter plot of the two variables.
 	:param hr: 					The data object.
@@ -198,30 +174,15 @@ def draw_scatter_plots(hr, vars, vars_pretty_print):
 	:return: 					Nothing.
 	:Note: For the discretized features there is a hr.discretize in objects. For now only last_eval (but who knows)
 	"""
-	var_val1 = hr.data[vars[0]]
-	var_val2 = hr.data[vars[1]]
-
-	# Fix for last_evaluation
-	if vars[0] == "last_evaluation":
-		var_val1 = hr.discretize["last_evaluation"]
-
-	if vars[1] == "last_evaluation":
-		var_val2 = hr.discretize["last_evaluation"]
-
+	x_values = hr.discrete[var_x]
+	y_values = hr.discrete[var_y]
 
 	figure, axes = pp.subplots()
-
-	# add a 'best fit' line
-	#n, bins, patches = axes.hist(var_val, num_bins, label='Scatter Plot', color=colors['main'], normed=False)
-	#y = mlab.normpdf(bins, var_val_mean, var_val_std) * sum(n * np.diff(bins))
-	axes.scatter(var_val1, var_val2)
+	axes.scatter(x_values, y_values)
 	axes.set_xlabel(str(vars_pretty_print[0]))
 	axes.set_ylabel(str(vars_pretty_print[1]))
-	#axes.set_title(r'Scatter plot: '+var_val1+var_val2)
 	pp.title(str(vars_pretty_print[0])+str(vars_pretty_print[1]) + 'scatter')
 	pp.savefig(str(vars_pretty_print[0])+str(vars_pretty_print[1]) + '.png')
-
-
 
 
 def sample(values, k, bins, bin_labels, samples_number, replace=False, coverage={}):
@@ -253,22 +214,8 @@ def sample(values, k, bins, bin_labels, samples_number, replace=False, coverage=
 	return samples
 
 
-# Main
-if __name__ == '__main__':
-	labels = ['satisfaction_level', 'last_evaluation', 'average_montly_hours', 'time_spend_company', 'number_project',
-			  'Work_accident', 'left', 'promotion_last_5years', 'sales', 'salary']
-	pretty_prints = ['Self-reported satisfaction', 'Time since last valuation, in weeks', 'AVG Monthly hours',
-					 'Time in company in years', 'Projects', 'Accident', 'Left', 'Promoted (5 years)', 'Sales',
-					 'Salary']
-	labels_pretty_print = {k: v for k, v in zip(labels, pretty_prints)}
-	continuous_labels = labels[0:3]
-	discrete_labels = labels[3:5]
-	categorical_labels = labels[5:]
-	categorical_labels_boolean = [('Injured', 'Safe'), ('Left', 'Stayed'), ('Promoted', 'Not promoted')]
-
-	data = pd.read_csv("./hr.csv")
-	hr = HR(data, normalised=True)
-
+def parse_arguments():
+	arguments = {}
 	parser = OptionParser()
 	parser.add_option("-d", "--distribution", dest="distributions",
 					  help="List distributions to plot, comma separated", metavar="DISTRIBUTIONS")
@@ -276,30 +223,50 @@ if __name__ == '__main__':
 
 	
 	(options, args) = parser.parse_args()
-	draw_correlation = options.correlation
+	arguments["draw_correlation"] = options.correlation
 
 	if not (options.distributions is None):
-		distributions = options.distributions.split(",")
+		arguments["distributions"] = options.distributions.split(",")
 	else:
-		distributions = list()
+		arguments["distributions"] = list()
+
+	return arguments
+
+
+def data_analysis():
+	parsed_arguments = parse_arguments()
+	distributions = parsed_arguments["distributions"]
 
 	if distributions.count("all") > 0:
-		draw_distributions(hr, continuous_labels, pretty_prints[:3])
-		draw_discrete_distributions(hr, discrete_labels, pretty_prints[3:5])
-		draw_categorical_distributions(hr, labels[5:], pretty_prints[5:], categorical_labels_boolean)
+		draw_distributions(hr, continuous_labels, pretty_prints[:2])
+		draw_discrete_distributions(hr, discrete_labels, pretty_prints[2:5])
+		draw_categorical_distributions(hr, categorical_labels, categorical_labels_pretty_prints)
 	else:
 		discrete_vars = set(distributions).intersection(discrete_labels)
 		continuous_vars = set(distributions).intersection(continuous_labels)
+		categorical_vars = set(distributions).intersection(categorical_labels)
 		for var in discrete_vars:
 			var_pretty_print = labels_pretty_print[var]
 			draw_discrete_distribution(hr, var, var_pretty_print)
 		for var in continuous_vars:
 			var_pretty_print = labels_pretty_print[var]
 			draw_distribution(hr, var, var_pretty_print)
+		for var in categorical_vars:
+			var_pretty_prints = categorical_labels_pretty_prints[var]
+			title = labels_pretty_print[var]
+			draw_categorical_distribution(hr, var, var_pretty_prints, title)
 
-	if draw_correlation:
-		normalised_data = pd.DataFrame(hr.normalised)
-		draw_correlation_matrix(data.corr(), pretty_prints)
-		draw_correlation_matrix(normalised_data.corr(), pretty_prints, normalised=True)
+	if parsed_arguments["draw_correlation"]:
+		#department_salary_left_correlation = department_salary_left_correlation(hr)
+		draw_correlation_matrix(hr.normal[correlated_labels].corr(), pretty_prints[:5] + [pretty_prints[-1]], normalised=True)
 
+	promotions_per_project(hr)
+	salary_per_department(hr, left=True)
+
+
+# Main
+if __name__ == '__main__':
+	hr = HR(data, normalised=True)
+
+	data_analysis()
 	pp.show()
