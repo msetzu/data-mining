@@ -7,6 +7,7 @@
 
 # Pycharm
 .idea/
+__pycache__/
 
 # Graphs
 *.png
