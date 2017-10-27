@@ -1,6 +1,4 @@
 import pandas as pd
-import numpy as np
-from settings import labels
 
 
 class HR:

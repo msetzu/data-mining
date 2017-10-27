@@ -4,6 +4,7 @@ from matplotlib.colors import LinearSegmentedColormap
 # Dataset
 data = pd.read_csv("./hr.csv")
 entries = len(data)
+bins = 10
 
 # Data analysis
 analysis = {
@@ -43,6 +44,7 @@ departments_pretty_prints = ["Information Technology",
                              "Support",
                              "Technical"]
 labels_pretty_print = {k: v for k, v in zip(labels, pretty_prints)}
+labels_pretty_print["salary_int"] = "Salary"
 
 continuous_labels = labels[0:2]
 discrete_labels = labels[2:5]
@@ -57,11 +59,11 @@ departments = set(data["sales"])
 
 # Scatter plot
 scatter = {
-    'sampling_size': 10,   # size of each sample
-    'samples': 5,   "   "   # number of samples to extract
-    'edge_bins': 1, "   " # edge bins possibly containing outliers
-    'bins': 10,
-    'replace': True
+    "sampling_size": 100,    # size of each sample
+    "samples": 5,           # number of samples to extract
+    "edge_bins": 1,         # edge bins possibly containing outliers
+    "bins": 10,
+    "replace": True
 }
 
 
@@ -72,6 +74,13 @@ palette = {
     'pr_complementary': '#F9CDAD',
     'sc_complementary': '#C8C8A9',
     'secondary': '#83AF9B'
+}
+
+round_palette = {
+    "main": palette["secondary"],
+    "secondary": palette["complementary"],
+    "pr_complementary": palette["sc_complementary"],
+    "sc_complementary": palette["secondary"]
 }
 
 large_palette = {
@@ -85,6 +94,20 @@ large_palette = {
     "maroon": "#85144b",
     "black": "#111111",
     "grey": "#AAAAAA"
+}
+
+large_palette = {
+    "navy": "#001f3f",
+    "blue": "#0074D9",
+    "olive": "#3D9970",
+    "orange": "#FF851B",
+    "green": "#2ECC40",
+    "yellow": "#FFDC00",
+    "red": "#FF4136",
+    "maroon": "#85144b",
+    "black": "#111111",
+    "grey": "#AAAAAA",
+    "stack": large_palette["orange"]
 }
 
 cmap_pale_pink = LinearSegmentedColormap.from_list('Pale pink',
