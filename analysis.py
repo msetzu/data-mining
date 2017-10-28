@@ -36,8 +36,10 @@ def data_analysis(hr):
                                 normalised=True)
     if parsed_arguments["promotions-per-project"]:
         promotions_per_project(hr)
+    if parsed_arguments["left-per-department"]:
+        left_per_department(hr)
     if parsed_arguments["salary-per-department"]:
-        salary_per_department(hr, left=True)
+        salary_per_department(hr)
     if parsed_arguments["scatter-plots"]:
         draw_scatter_plots(hr)
 
@@ -48,6 +50,7 @@ def parse_arguments():
     parser.add_option("-d", "--distribution", dest="distributions", help="List distributions to plot, comma separated",
                       metavar="DISTRIBUTIONS")
     parser.add_option("--correlation", action="store_true", dest="correlation")
+    parser.add_option("--left-per-department", action="store_true", dest="left_per_department")
     parser.add_option("--salary-per-department", action="store_true", dest="salary_per_department")
     parser.add_option("--promotions-per-project", action="store_true", dest="promotions_per_project")
     parser.add_option("--scatter-plots", action="store_true", dest="scatter_plots")
@@ -55,6 +58,7 @@ def parse_arguments():
     (options, args) = parser.parse_args()
     arguments["draw_correlation"] = options.correlation
     arguments["scatter-plots"] = options.scatter_plots
+    arguments["left-per-department"] = options.left_per_department
     arguments["salary-per-department"] = options.salary_per_department
     arguments["promotions-per-project"] = options.promotions_per_project
 
@@ -142,7 +146,7 @@ def draw_distribution(hr, var, var_pretty_print):
     pp.savefig(str(var_pretty_print) + '.png', bbox_extra_artists=[lgd], bbox_inches='tight')
 
 
-def draw_categorical_distribution(hr, var, var_pretty_prints, title):
+def draw_categorical_distribution(var_val, var_pretty_prints, title):
     """
     Draw the distcrete variables' distributions.
     :param hr: 					The data object.
@@ -151,8 +155,6 @@ def draw_categorical_distribution(hr, var, var_pretty_prints, title):
     :param title:				The plot's title.
     :return: 					Nothing.
     """
-    var_val = list(hr.data[var])
-
     figure, axes = pp.subplots()
     x_values = list(set(var_val))
     x_ticks = range(len(x_values))
@@ -179,17 +181,14 @@ def draw_categorical_distribution(hr, var, var_pretty_prints, title):
     pp.savefig(str(title) + '.png')
 
 
-def draw_discrete_distribution(hr, var, var_pretty_print, title):
+def draw_discrete_distribution(var_val, var_pretty_print, title):
     """
     Draw the distcrete variables' distributions.
-    :param title: 				The plot's title.
-    :param hr: 					The data object.
-    :param var: 				The variable whose distribution to draw.
+    :param var_val: 			The values to draw.
     :param var_pretty_print: 	The variable's pretty print name.
+    :param title: 				The plot's title.
     :return: 					Nothing.
     """
-    var_val = list(hr.discrete[var])
-
     figure, axes = pp.subplots()
     x_values = list(set(var_val))
     x_values.sort()
@@ -254,7 +253,7 @@ def draw_scatter_plot(var_x, var_y, var_x_pretty_print, var_y_pretty_print, titl
     pp.savefig(title + ".png")
 
 
-def draw_discrete_distribution_stacked(vars, var_pretty_prints, stack_pretty_print, title, ticks, colors=settings.palette):
+def draw_discrete_distribution_stacked(vars, var_pretty_prints, title, ticks, legend=list(), colors=settings.large_palette_stacked, stack_pretty_print = "", top_text=list()):
     """
     Draw the distcrete variables' distributions with a stacked value.
     :param vars:                Variables to draw. Dictionary: label -> value.
@@ -263,10 +262,15 @@ def draw_discrete_distribution_stacked(vars, var_pretty_prints, stack_pretty_pri
     :param title:				The graph's title.
     :param ticks:				The x axis ticks.
     :param colors: 				The colormap for the graph.
+    :param top_text:            Text to put on top of the bar. Default: none.
     :return: 					Nothing.
     """
     n = len(ticks)
-    width = 0.8 * (0.9 / len(var_pretty_prints))
+    if len(legend) == 0:
+        width = 0.8 * (0.9 / len(var_pretty_prints))
+    else:
+        width = 0.8 * (0.9 / len(legend))
+
     index = np.arange(n)
 
     figure, axes = pp.subplots()
@@ -275,43 +279,74 @@ def draw_discrete_distribution_stacked(vars, var_pretty_prints, stack_pretty_pri
     if list(vars.keys()).count("stack") == 0:
         for var, pretty_print, color_key, offset in zip(vars, var_pretty_prints, colors, offsets):
             axes.bar(x=offset, height=vars[var], color=colors[color_key], width=width, label=pretty_print)
+
+        if len(top_text) > 0:
+            heights = list(map(lambda patch: patch.get_height(), axes.patches))
+            for patch, height, text in zip(axes.patches, heights, top_text):
+                axes.text(patch.get_x() + patch.get_width() / 2, height + 5, text, ha='center', va='bottom')
+
     else:
         keys = list(vars.keys())
         keys.remove("stack")
 
         for var, stack_var, pretty_print, color_key, offset in zip(keys, vars["stack"], var_pretty_prints, colors, offsets):
             axes.bar(x=offset, height=vars[var], color=colors[color_key], width=width, label=pretty_print.capitalize())
-            axes.bar(x=offset, height=vars["stack"][var], color=large_palette["stack"], width=width, label="stack")
+            axes.bar(x=offset, height=vars["stack"][var], color=large_palette_stacked["stack"], width=width, label="stack")
 
         handles, labels = axes.get_legend_handles_labels()
-        new_labels = []
-        new_handles = []
-        labels_indexes = set(list(range(len(labels)))) - \
-                         set([label[0] for label in filter(lambda x: x[0] % 2 == 1, enumerate(labels))])
-
-        for i in labels_indexes:
-            new_labels.append(labels[i])
-            new_handles.append(handles[i])
-
-        stack_patch = mpatches.Patch(color=large_palette["stack"], label=stack_pretty_print)
+        labels_indexes = set(list(range(len(labels)))) - set([label[0] for label in filter(lambda x: x[0] % 2 == 1, enumerate(labels))])
+        new_labels = [labels[i] for i in labels_indexes]
+        new_handles = [handles[i] for i in labels_indexes]
+        stack_patch = mpatches.Patch(color=large_palette_stacked["stack"], label=stack_pretty_print)
         new_handles.append(stack_patch)
         new_labels.append(stack_pretty_print)
-        lgd = axes.legend(new_handles, new_labels, loc="best")
-        pp.title(str(title))
-        pp.savefig(str(title) + '.png', bbox_extra_artists=[lgd], bbox_inches='tight')
-        axes.set_xticks(index + width / len(var_pretty_prints))
-        axes.set_xticklabels(ticks, rotation=25, ha='right')
-        return
 
+    axes.set_xticklabels(ticks, rotation=25, ha="right")
     axes.set_xticks(index + width / len(var_pretty_prints))
-    axes.set_xticklabels(ticks, rotation=25, ha='right')
-    axes.legend()
+    new_handles, new_labels = axes.get_legend_handles_labels()
+
+    if len(legend) > 0:
+        lgd = axes.legend(new_handles, legend, loc="best")
+    else:
+        lgd = axes.legend(new_handles, new_labels, loc="best")
+
     pp.title(str(title))
-    pp.tight_layout()
     pp.savefig(str(title) + '.png', bbox_extra_artists=[lgd], bbox_inches='tight')
+    return
 
 
-def salary_per_department(hr, left=False):
+def left_per_department(hr):
+    """
+    Draw graph with salary distribution per department. If left = True, also add the number of people who left.
+    :param hr:      The data object.
+    :param left:    True for drawing left rate, false otherwise. Default: False
+    :return:        Nothing.
+    """
+    departments = list(set(hr.data["sales"]))
+    departments.sort()
+    sales_int = {k: v for k, v in zip(departments, range(len(departments)))}
+    sales_int = list(map(lambda x: sales_int[x], list(data["sales"])))
+    columns = ["salary_int", "sales", "left"]
+
+    left_employees = hr.discrete[hr.discrete["left"] == 1][columns]
+    left_employees_num = left_employees.shape[0]
+    department_sizes = [(hr.data[hr.data["sales"] == department]).shape[0] for department in departments]
+    department_sizes_percentages = list(map(lambda x: round(x/14999,2), department_sizes))
+    left_employees_per_department = {department: left_employees[left_employees["sales"] == department][columns]
+                                    for department in departments}
+    left_employees_department = list(map(lambda x: x.shape[0], left_employees_per_department.values()))
+    expected_left_employees = list(map(lambda percentage: int(percentage * left_employees_num), department_sizes_percentages))
+
+    draw_discrete_distribution_stacked(vars = {"Actual leave": left_employees_department,
+                                               "Expected leave": expected_left_employees},
+                                                var_pretty_prints = departments_pretty_prints,
+                                                title = "Left employees per department, expected left employees per department",
+                                                ticks = departments_pretty_prints,
+                                                legend = ["Left employees", "Expected left employees"],
+                                                colors = palette)
+
+
+def salary_per_department(hr):
     """
     Draw graph with salary distribution per department. If left = True, also add the number of people who left.
     :param hr:      The data object.
@@ -323,36 +358,7 @@ def salary_per_department(hr, left=False):
     sales_int = {k: v for k, v in zip(departments, range(len(departments)))}
     sales_int = list(map(lambda x: sales_int[x], list(data["sales"])))
     settings.data = data.assign(sales_int=sales_int)
-
     columns = ["salary_int", "sales", "left"]
-    left_employees = hr.discrete[hr.discrete["left"] == 1][columns]
-    earning_buckets = [10000, 25000, 50000]
-
-    employees_in_earning_bucket = {bucket: hr.discrete[hr.discrete["salary_int"] == bucket][columns]
-                                   for bucket in earning_buckets}
-
-    left_employees_in_earning_bucket = {bucket: left_employees[left_employees["salary_int"] == bucket][columns]
-                                        for bucket in earning_buckets}
-
-    past_employees_in_earning_bucket = {bucket: left_employees[left_employees["salary_int"] == bucket][columns]
-                                        for bucket in earning_buckets}
-
-    employees_in_department = {department: hr.discrete[hr.discrete["sales"] == department][columns]
-                               for department in set(hr.discrete["sales"])}
-
-    left_employees_in_department = {department: left_employees[left_employees["sales"] == department][columns]
-                                    for department in set(hr.discrete["sales"])}
-
-    left_earning_rates = {bucket: 100 * left_employees_in_earning_bucket[bucket].shape[0] / left_employees.shape[0]
-                          for bucket in earning_buckets}
-
-    employees_in_earning_bucket_per_department = {department: {bucket: employees_in_earning_bucket[bucket]
-                                                               for bucket in earning_buckets} for department in
-                                                  departments}
-    left_department_rates = {
-        department: 100 * left_employees_in_department[department].shape[0] / left_employees.shape[0]
-        for department in departments}
-
     department_salary_distribution = {}
     department_salary_distribution["stack"] = {}
     buckets = ["low", "medium", "high"]
@@ -387,7 +393,7 @@ def promotions_per_project(hr):
                                        var_pretty_prints = list(categorical_labels_pretty_prints["promotion_last_5years"]),
                                        title = "Promotion according to number of projects",
                                        ticks = list(map(str, projects_range)),
-                                       colors = settings.palette)
+                                       colors = settings.large_palette_stacked)
 
     pp.title("Promotion rate per number of projects")
     pp.savefig("Promotion rate per number of projects.png")

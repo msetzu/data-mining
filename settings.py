@@ -86,9 +86,9 @@ round_palette = {
 large_palette = {
     "navy": "#001f3f",
     "blue": "#0074D9",
+    "green": "#2ECC40",
     "olive": "#3D9970",
     "orange": "#FF851B",
-    "green": "#2ECC40",
     "yellow": "#FFDC00",
     "red": "#FF4136",
     "maroon": "#85144b",
@@ -96,7 +96,26 @@ large_palette = {
     "grey": "#AAAAAA"
 }
 
-large_palette = {
+large_palette_full = {
+    "navy": "#001f3f",
+    "blue": "#0074D9",
+    "aqua": "#7FDBFF",
+    "teal": "#39CCCC",
+    "olive": "#3D9970",
+    "green": "#2ECC40",
+    "lime": "#01FF70",
+    "yellow": "#FFDC00",
+    "orange": "#FF851B",
+    "red": "#FF4136",
+    "maroon": "#85144b",
+    "fuchsia": "#F012BE",
+    "purple": "#B10DC9",
+    "black": "#111111",
+    "grey": "#AAAAAA",
+    "silver": "#DDDDDD"
+}
+
+large_palette_stacked = {
     "navy": "#001f3f",
     "blue": "#0074D9",
     "olive": "#3D9970",
