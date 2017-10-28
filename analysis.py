@@ -47,13 +47,12 @@ def data_analysis(hr):
 def parse_arguments():
     arguments = {}
     parser = OptionParser()
-    parser.add_option("-d", "--distribution", dest="distributions", help="List distributions to plot, comma separated",
-                      metavar="DISTRIBUTIONS")
-    parser.add_option("--correlation", action="store_true", dest="correlation")
-    parser.add_option("--left-per-department", action="store_true", dest="left_per_department")
-    parser.add_option("--salary-per-department", action="store_true", dest="salary_per_department")
-    parser.add_option("--promotions-per-project", action="store_true", dest="promotions_per_project")
-    parser.add_option("--scatter-plots", action="store_true", dest="scatter_plots")
+    parser.add_option("-d", "--distribution", dest="distributions", help="List distributions to plot, comma separated", metavar="DISTRIBUTIONS")
+    parser.add_option("--correlation", action="store_true", dest="correlation", help="Show correlation matrix")
+    parser.add_option("--left-per-department", action="store_true", dest="left_per_department", help="Show expected and actual left rate")
+    parser.add_option("--salary-per-department", action="store_true", dest="salary_per_department", help="Show salary per department, account for left employees")
+    parser.add_option("--promotions-per-project", action="store_true", dest="promotions_per_project", help="Show promotions rate per number of project")
+    parser.add_option("--scatter-plots", action="store_true", dest="scatter_plots", help="Plot scatter plots")
 
     (options, args) = parser.parse_args()
     arguments["draw_correlation"] = options.correlation

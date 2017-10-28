@@ -6,10 +6,24 @@ The dataset is publicly available at [kaggle](https://www.kaggle.com/quentinvinc
 
 ## Usage
 ```bash
-$ python hr.py -d all|satisfaction_level|last_evaluation|number_project
-|average_montly_hours|time_spend_company|Work_accident|left|promotion_last_5years|sales|salary
+$ python hr.py -h
+Usage: hr.py [options]
+
+Options:
+  -h, --help            show this help message and exit
+  -d DISTRIBUTIONS, --distribution=DISTRIBUTIONS
+                        List distributions to plot, comma separated
+  --correlation         Show correlation matrix
+  --left-per-department
+                        Show expected and actual left rate
+  --salary-per-department
+                        Show salary per department, account for left employees
+  --promotions-per-project
+                        Show promotions rate per number of project
+  --scatter-plots       Plot scatter plots
+
 ```
-with `-d` option for the distribution(s) whose graph(s) to draw. `all` draws all the distributions, otherwise you can select just one or more than one, separated by `,` (no space between them).
+use the `-h` option to get the available options.
 Ex.
 ```
 $ python hr.py -d all
