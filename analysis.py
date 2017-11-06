@@ -73,12 +73,9 @@ def draw_scatter_plots(hr):
     columns = correlated_labels
     tuples = list(itertools.combinations(columns, 2))
     for i, (var_x, var_y) in enumerate(tuples):
-        print(str(i))
-        df = (hr.discrete.groupby(var_x).apply(lambda x: x.sample(n=scatter["sampling_size"], replace=True)))[
-            [var_x, var_y]]
-        draw_scatter_plot(list(df[var_x]), list(df[var_y]),
-                          labels_pretty_print[var_x], labels_pretty_print[var_y],
-                          "Scatter-" + str(i))
+        df = (hr.discrete.groupby(var_x)
+              .apply(lambda x: x.sample(n=scatter["sampling_size"], replace=True)))[[var_x, var_y]]
+        draw_scatter_plot(list(df[var_x]), list(df[var_y]), labels_pretty_print[var_x], labels_pretty_print[var_y], "Scatter-" + str(i))
 
 
 def quantiles(data, quantiles):
@@ -103,8 +100,7 @@ def draw_discrete_distributions(hr, vars, vars_pretty_print):
 
 def draw_categorical_distributions(hr, vars, vars_pretty_prints):
     for var, var_pretty_print in zip(vars, vars_pretty_prints):
-        draw_categorical_distribution(hr, var, categorical_labels_pretty_prints[var_pretty_print],
-                                      labels_pretty_print[var])
+        draw_categorical_distribution(hr, var, categorical_labels_pretty_prints[var_pretty_print], labels_pretty_print[var])
 
 
 def draw_distribution(hr, var, var_pretty_print):
