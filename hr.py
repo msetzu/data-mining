@@ -1,11 +1,12 @@
-from analysis import *
+from clustering import *
 from settings import *
 from objects import HR
 
 
 # Main
 if __name__ == '__main__':
-	hr = HR(data, normalised=True)
+	hr = HR(data)
 
-	data_analysis(hr)
-	pp.show()
+	#data_analysis(hr)
+	cluster(hr)
+	#pp.show()

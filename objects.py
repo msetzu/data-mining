@@ -2,12 +2,15 @@ import pandas as pd
 
 
 class HR:
-	def __init__(self, data, normalised=False):
+	def __init__(self, data):
 		"""
 		Constructor.
 		:param data:		The pandas dataframe to use to construct the object.
 		:param normalised: 	If True, data.normalised contains a normalised version of the data columns.
 		"""
+		entries = data.shape[0]
+		idx = pd.Series(range(entries))
+
 		self.data = {}
 		self.data["satisfaction_level"] = data["satisfaction_level"]
 		self.data["last_evaluation"] = data["last_evaluation"]
@@ -19,6 +22,7 @@ class HR:
 		self.data["promotion_last_5years"] = data["promotion_last_5years"]
 		self.data["sales"] = data["sales"]
 		self.data["salary"] = data["salary"]
+		self.data["idx"] = idx
 		self.data = pd.DataFrame.from_dict(self.data)
 
 
@@ -34,6 +38,7 @@ class HR:
 		self.normal["sales"] = data["sales"]
 		self.normal["salary_int"] = data.assign(salary_int=self.salaries(data))["salary_int"]
 		self.normal["salary_int"] = (self.normal["salary_int"] - self.normal["salary_int"].mean()) / self.normal["salary_int"].std()
+		self.normal["idx"] = idx
 		self.normal = pd.DataFrame.from_dict(self.normal)
 
 		self.discrete = {}
@@ -48,6 +53,7 @@ class HR:
 		self.discrete["sales"] = self.data["sales"]
 		self.discrete["salary"] = self.data["salary"]
 		self.discrete["salary_int"] = data.assign(salary_int = self.salaries(data))["salary_int"]
+		self.discrete["idx"] = idx
 		self.discrete = pd.DataFrame.from_dict(self.discrete)
 
 		self.std = {}
