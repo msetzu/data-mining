@@ -8,9 +8,14 @@
 # Pycharm
 .idea/
 __pycache__/
+*.pyc
 
 # Graphs
 *.png
+/graphs/
+
+# Hibernation
+*.pickle
 
 # Created by https://www.gitignore.io/api/pycharm
 
