@@ -42,6 +42,8 @@ def data_analysis(hr):
         salary_per_department(hr)
     if parsed_arguments["scatter-plots"]:
         draw_scatter_plots(hr)
+    if parsed_arguments["log"]:
+        log_transformation(hr)    
 
 
 def parse_arguments():
@@ -53,6 +55,7 @@ def parse_arguments():
     parser.add_option("--salary-per-department", action="store_true", dest="salary_per_department", help="Show salary per department, account for left employees")
     parser.add_option("--promotions-per-project", action="store_true", dest="promotions_per_project", help="Show promotions rate per number of project")
     parser.add_option("--scatter-plots", action="store_true", dest="scatter_plots", help="Plot scatter plots")
+    parser.add_option("--log", action="store_true", dest="log", help="Plot log transformation")
 
     (options, args) = parser.parse_args()
     arguments["draw_correlation"] = options.correlation
@@ -60,6 +63,7 @@ def parse_arguments():
     arguments["left-per-department"] = options.left_per_department
     arguments["salary-per-department"] = options.salary_per_department
     arguments["promotions-per-project"] = options.promotions_per_project
+    arguments["log"] = options.log
 
     if not (options.distributions is None):
         arguments["distributions"] = options.distributions.split(",")
@@ -397,3 +401,45 @@ def promotions_per_project(hr):
     pp.title("Promotion rate per number of projects")
     pp.savefig("Promotion rate per number of projects.png")
     pp.draw()
+
+def log_transformation(hr):
+    to_log_tsc = []
+
+    for i in range(len(hr.data["time_spend_company"])):
+        to_log_tsc.append((np.log(hr.data["time_spend_company"][i])*0.54)+0.32)
+
+    var_val_std_tsc = np.std(to_log_tsc)
+    var_val_mean_tsc = np.mean(to_log_tsc)
+    num_bins_tsc = int(np.ceil(np.log2(len(to_log_tsc))) + 1)
+
+    figure, axes = pp.subplots()
+
+    n, bins, patches = axes.hist(to_log_tsc, num_bins_tsc, label='log distribution for time spend company', color=palette['main'], normed=False,
+                                 stacked=True)
+    y = mlab.normpdf(bins, var_val_mean_tsc, var_val_std_tsc) * sum(n * np.diff(bins))
+
+    axes.plot(bins, y, '.-.', color=palette['secondary'], label="Gaussian approximation")
+    axes.set_xlabel('log distr time spend company')
+    axes.set_ylabel('Employees')
+    axes.set_title(r'log distr for time spend company')
+
+    to_log = []
+
+    for i in range(len(hr.discrete["last_evaluation"])):
+        to_log.append((np.log(hr.discrete["last_evaluation"][i])*0.32)+0.12)
+
+    var_val_std = np.std(to_log)
+    var_val_mean = np.mean(to_log)
+    num_bins = int(np.ceil(np.log2(len(to_log))) + 1)
+
+    figure, axes = pp.subplots()
+
+    n, bins, patches = axes.hist(to_log, num_bins, label='log dist for last evaluation', color=palette['main'], normed=False,
+                                 stacked=True)
+    y = mlab.normpdf(bins, var_val_mean, var_val_std) * sum(n * np.diff(bins))
+
+    axes.plot(bins, y, '.-.', color=palette['secondary'], label="Gaussian approximation")
+    axes.set_xlabel('log distr for last evaluation')
+    axes.set_ylabel('Employees')
+    axes.set_title(r'Log distr for last evaluation')
+    
