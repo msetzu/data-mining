@@ -16,20 +16,24 @@ def data_analysis(hr):
         draw_distributions(hr, continuous_labels, pretty_prints[:2])
         draw_discrete_distributions(hr, discrete_labels, pretty_prints[2:5])
         draw_categorical_distributions(hr, categorical_labels, categorical_labels_pretty_prints)
+        draw_ordinal_distribution(hr.data["salary"], ordinal_labels_pretty_prints["salary"], "Salary percentages")
     else:
         discrete_vars = set(distributions).intersection(discrete_labels)
         continuous_vars = set(distributions).intersection(continuous_labels)
         categorical_vars = set(distributions).intersection(categorical_labels)
+        ordinal_vars = set(distributions).intersection(ordinal_labels)
         for var in discrete_vars:
             var_pretty_print = labels_pretty_print[var]
-            draw_discrete_distribution(hr, var, var_pretty_print, var_pretty_print)
+            draw_discrete_distribution(hr.discrete[var], var_pretty_print, var_pretty_print)
         for var in continuous_vars:
             var_pretty_print = labels_pretty_print[var]
             draw_distribution(hr, var, var_pretty_print)
         for var in categorical_vars:
             var_pretty_prints = categorical_labels_pretty_prints[var]
             title = labels_pretty_print[var]
-            draw_categorical_distribution(hr, var, var_pretty_prints, title)
+            draw_categorical_distribution(hr.discrete[var], var_pretty_prints, title)
+        for var in ordinal_vars:
+            draw_ordinal_distribution(hr.discrete[var], var_pretty_prints[var], var_pretty_prints[var] + " distribution")
 
     if parsed_arguments["draw_correlation"]:
         draw_correlation_matrix(hr.normal[correlated_labels].corr(), pretty_prints[:5] + [pretty_prints[-1]],
@@ -73,9 +77,10 @@ def draw_scatter_plots(hr):
     columns = correlated_labels
     tuples = list(itertools.combinations(columns, 2))
     for i, (var_x, var_y) in enumerate(tuples):
-        df = (hr.discrete.groupby(var_x)
-              .apply(lambda x: x.sample(n=scatter["sampling_size"], replace=True)))[[var_x, var_y]]
+        df = (hr.discrete.groupby(var_x).apply(lambda x: x.sample(n=scatter["sampling_size"], replace=True)))[[var_x, var_y]]
+        df_cont = hr.normal.groupby(var_x).apply(lambda x: x.sample(n=scatter["sampling_size"], replace=True))[[var_x, var_y]]
         draw_scatter_plot(list(df[var_x]), list(df[var_y]), labels_pretty_print[var_x], labels_pretty_print[var_y], "Scatter-" + str(i))
+        draw_scatter_plot(list(df_cont[var_x]), list(df_cont[var_y]), labels_pretty_print[var_x], labels_pretty_print[var_y], "[Normal] Scatter-" + str(i))
 
 
 def quantiles(data, quantiles):
@@ -95,12 +100,12 @@ def draw_distributions(hr, vars, vars_pretty_print):
 
 def draw_discrete_distributions(hr, vars, vars_pretty_print):
     for var, var_pretty_print, in zip(vars, vars_pretty_print):
-        draw_discrete_distribution(hr, var, var_pretty_print, labels_pretty_print[var])
+        draw_discrete_distribution(hr.discrete[var], var_pretty_print, labels_pretty_print[var])
 
 
 def draw_categorical_distributions(hr, vars, vars_pretty_prints):
     for var, var_pretty_print in zip(vars, vars_pretty_prints):
-        draw_categorical_distribution(hr, var, categorical_labels_pretty_prints[var_pretty_print], labels_pretty_print[var])
+        draw_categorical_distribution(hr.discrete[var], categorical_labels_pretty_prints[var_pretty_print], labels_pretty_print[var])
 
 
 def draw_distribution(hr, var, var_pretty_print):
@@ -141,35 +146,27 @@ def draw_distribution(hr, var, var_pretty_print):
     pp.savefig(str(var_pretty_print) + '.png', bbox_extra_artists=[lgd], bbox_inches='tight')
 
 
-def draw_categorical_distribution(var_val, var_pretty_prints, title):
+def draw_categorical_distribution(var_val, var_pretty_print, title):
     """
     Draw the distcrete variables' distributions.
     :param hr: 					The data object.
     :param var: 				The variable whose distribution to draw.
-    :param var_pretty_prints: 	The variable's pretty print name.
+    :param var_pretty_print: 	The variable's pretty print name.
     :param title:				The plot's title.
     :return: 					Nothing.
     """
     figure, axes = pp.subplots()
-    x_values = list(set(var_val))
-    x_ticks = range(len(x_values))
-    x_values.sort()
-    x_values.reverse()
-
-    frequency = list()
-    for x in x_values:
-        frequency.append(var_val.count(x))
-
-    if x_values == [1, 0]:
-        x_ticks = list(var_pretty_prints)
-        frequency.reverse()
-
-    bars = pp.bar(x_ticks, frequency)
-    bars[0].set_color(palette["main"])
-    bars[1].set_color(palette["secondary"])
+    frequencies = var_val.value_counts()
+    values = list(frequencies.keys())
+    frequencies.ix[values].plot(kind="bar", color=palette["main"])
     axes.set_ylabel("Employees")
     axes.set_title(str(title))
-    axes.set_xticklabels(x_ticks)
+
+    if title == "Department":
+        axes.set_xticklabels(var_pretty_print, rotation=35, ha="right")
+    else:
+        axes.set_xticklabels(var_pretty_print, rotation=0)
+
     pp.title(title)
 
     pp.tight_layout()
@@ -178,27 +175,47 @@ def draw_categorical_distribution(var_val, var_pretty_prints, title):
 
 def draw_discrete_distribution(var_val, var_pretty_print, title):
     """
-    Draw the distcrete variables' distributions.
+    Draw the distcrete variables' distribution.
     :param var_val: 			The values to draw.
     :param var_pretty_print: 	The variable's pretty print name.
     :param title: 				The plot's title.
     :return: 					Nothing.
     """
     figure, axes = pp.subplots()
-    x_values = list(set(var_val))
-    x_values.sort()
+    frequencies = var_val.value_counts()
+    values = list(frequencies.keys())
+    values.sort()
 
-    frequency = list()
-    for x in x_values:
-        frequency.append(var_val.count(x))
-
-    pp.bar(x_values, frequency, color=palette['main'])
-    axes.set_xticks(x_values)
+    frequencies.ix[values].plot(kind="bar", color=palette["main"])
     axes.set_ylabel('Employees')
     axes.set_title(str(title))
+    axes.set_xticklabels(values, rotation=0)
 
     pp.tight_layout()
     pp.savefig(str(var_pretty_print) + '.png')
+
+
+def draw_ordinal_distribution(var_val, var_pretty_print, title):
+    """
+    Draw the ordinal variable's distribution.
+    :param var_val:             The variable values.
+    :param var_pretty_prints:   The x ticks.
+    :param title:               The graph title.
+    :return:
+    """
+    figure, axes = pp.subplots()
+    x_ticks = ordered_ordinal_vars["salary"]
+    frequencies = var_val.value_counts()
+    frequencies.div(entries).ix[x_ticks].plot(kind="bar", color=palette["main"])
+
+    axes.set_ylabel("Employees' percentage")
+    axes.set_xlabel(var_pretty_print)
+    axes.set_xticklabels(x_ticks, rotation=0)
+    axes.set_ylabel("Employees percentage")
+    pp.tight_layout()
+    pp.title(title)
+    pp.savefig(title + ".png")
+
 
 
 def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False):
@@ -214,12 +231,12 @@ def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False)
     axes.set_yticks(np.arange(0, correlation_matrix.shape[1], correlation_matrix.shape[1] * 1.0 / len(pretty_labels)))
     axes.set_xticklabels(pretty_labels)
     axes.set_yticklabels(pretty_labels)
-    axes.set_xticklabels(pretty_labels, rotation=45, ha='right')
+    axes.set_xticklabels(pretty_labels, rotation=25, ha='right')
 
     # Hide borders
     axes.spines['top'].set_visible(False)
     axes.spines['right'].set_visible(False)
-    pp.tight_layout()
+    #pp.tight_layout()
     pp.draw()
 
     if not normalised:
@@ -273,7 +290,7 @@ def draw_discrete_distribution_stacked(vars, var_pretty_prints, title, ticks, le
 
     if list(vars.keys()).count("stack") == 0:
         for var, pretty_print, color_key, offset in zip(vars, var_pretty_prints, colors, offsets):
-            axes.bar(x=offset, height=vars[var], color=colors[color_key], width=width, label=pretty_print)
+            axes.barh(x=offset, height=vars[var], color=colors[color_key], width=width, label=pretty_print)
 
         if len(top_text) > 0:
             heights = list(map(lambda patch: patch.get_height(), axes.patches))
@@ -296,7 +313,8 @@ def draw_discrete_distribution_stacked(vars, var_pretty_prints, title, ticks, le
         new_handles.append(stack_patch)
         new_labels.append(stack_pretty_print)
 
-    axes.set_xticklabels(ticks, rotation=25, ha="right")
+    #axes.set_xticklabels(ticks, rotation=25, ha="right")
+    axes.set_xticklabels(ticks, rotation=0, ha="right")
     axes.set_xticks(index + width / len(var_pretty_prints))
     new_handles, new_labels = axes.get_legend_handles_labels()
 
