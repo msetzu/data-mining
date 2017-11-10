@@ -1,3 +1,4 @@
+from analysis import *
 from clustering import *
 from settings import *
 from objects import HR
@@ -7,6 +8,5 @@ from objects import HR
 if __name__ == '__main__':
 	hr = HR(data)
 
-	#data_analysis(hr)
+	data_analysis(hr)
 	cluster(hr)
-	#pp.show()

@@ -1,5 +1,7 @@
 import pickle
 import itertools
+import threading
+
 import matplotlib.pyplot as pp
 
 import numpy as np
@@ -10,7 +12,7 @@ from sklearn.metrics import silhouette_score
 from settings import *
 
 
-clustering = {
+kmeans_clustering = {
 	"runs": 1000,
 	"init": "random",
 	"precompute_distances": True,
@@ -18,43 +20,88 @@ clustering = {
 	"ks": list(range(2,15)) + [20, 30, 40, 50, 75, 100]
 }
 
-metrics = ["euclidean", "minkowski", "cityblock", "chebyshev"]
+metrics = ["euclidean", "minkowski", "cityblock", "chebyshev", "cosine"]
 
 
 def cluster(hr):
-	combinations = list(itertools.combinations(correlated_labels, 2))
-	datasets = [hr.discrete, hr.normal, hr.data]
-	titles = ["clusters.discrete.pickle", "clusters.normal.pickle", "clusters.raw.pickle"]
+	datasets = [hr.normal, hr.discrete]
+	titles = ["clustering.normal.pickle", "clustering.discrete.pickle"]
+	clustering_vars = [correlated_labels[:-1], correlated_labels]
+	threads = []
+	starts = [-1, -1]
 
-	for dataset, title in zip(datasets, titles):
+	# KMeans
+	for dataset, clustering_var, title, start in zip(datasets, clustering_vars, titles, starts):
+		thread = threading.Thread(target=cluster_kmeans, args=(dataset, clustering_var, title, start))
+		threads.append(thread)
+		thread.start()
+
+
+# noinspection PyTypeChecker
+def cluster_kmeans(dataset, clustering_vars, title, start, draw_validation="False"):
+	"""
+	Cluster the given dataset according to the provided clustering vars. Dump in a pickle file named tittle.
+	:param dataset:				The dataset to cluster.
+	:param clustering_vars:		The dataset variables to cluster.
+	:param title:				The dump filename.
+	:param start:				The variables combinations to skip.
+	:return:					Nothing.
+	"""
+	combinations = list(itertools.combinations(clustering_vars, 2))
+	combinations = combinations[start:]
+
+	if start != 0:
+		with open(title, "rb") as log:
+			kmeans = pickle.load(log)
+	elif start == -1:
+		return
+	else:
 		kmeans = {}
-		for i, (var_x, var_y) in enumerate(combinations):
-			entry_title = str(labels_pretty_print[var_x]) + " - " + str(labels_pretty_print[var_y])
 
-			entry = {clusters: k_means(df=dataset[[var_x, var_y]], k=clusters)
-					 for clusters in clustering["ks"]}
 
-			entry["cohesions"] = {metric: {k: sum(list(map(lambda x: x[metric], list(entry[k][1]["cohesion"].values()))))
-										   for k in clustering["ks"]} for metric in metrics}
-			entry["average separations"] = {metric: [sum(sum([entry[k][1]["separation"][j][metric] for j in range(k)])) / k
-													 for k in clustering["ks"]] for metric in metrics}
-			entry["graph cohesions"] = {metric: [sum([sum(sum(cdist(df[df["cluster"] == i], df[df["cluster"] == i])))
-													  for i in set(df["cluster"])]) for df in list(map(lambda x: x[0], entry.values()))]
-										for metric in metrics}
-			entry["graph separations"] = {metric: [sum([sum(sum(cdist(df[df["cluster"] == i], df[df["cluster"] != i])))
-														for i in set(df["cluster"])]) for df in list(map(lambda x: x[0], entry.values()))]
-										  for metric in metrics}
-			entry["silohuettes"] = {metric: [entry[k][1]["silohuette score"][metric] for k in clustering["ks"]]
+	for i, (var_x, var_y) in enumerate(combinations):
+		entry_title = str(labels_pretty_print[var_x]) + " - " + str(labels_pretty_print[var_y])
+
+		entry = {clusters: k_means(df=dataset[[var_x, var_y]], k=clusters)
+				 for clusters in kmeans_clustering["ks"]}
+		print("Done with kmeans")
+		cohesions = {metric: {k: sum(list(map(lambda x: x[metric], list(entry[k][1]["cohesion"].values()))))
+							  for k in kmeans_clustering["ks"]} for metric in metrics}
+
+		print("Done with cohesions")
+		average_separations = {metric: [sum(sum([entry[k][1]["separation"][j][metric] for j in range(k)])) / k
+										for k in kmeans_clustering["ks"]] for metric in metrics}
+
+		print("Done with separations")
+		graph_cohesions = {metric: [sum([sum(sum(cdist(df[df["cluster"] == i], df[df["cluster"] == i])))
+									for i in set(df["cluster"])]) for df in list(map(lambda x: x[0], entry.values()))]
 									for metric in metrics}
 
-			kmeans[entry_title] = entry
-			print("Done for " + entry_title)
+		print("Done with graph cohesions")
+		graph_separations = {metric: [sum([sum(sum(cdist(df[df["cluster"] == i], df[df["cluster"] != i])))
+										for i in set(df["cluster"])]) for df in list(map(lambda x: x[0], entry.values()))]
+										for metric in metrics}
+
+		print("Done with graph separations")
+		silhouettes = {metric: [entry[k][1]["silohuette score"][metric] for k in kmeans_clustering["ks"]]
+						for metric in metrics}
+
+		entry["cohesions"] = cohesions
+		entry["separation"] = average_separations
+		entry["graph cohesions"] = graph_cohesions
+		entry["graph separation"] = graph_separations
+		entry["silhouettes"] = silhouettes
+		kmeans[entry_title] = entry
+		print("[" + title + "]" + " Done for " + entry_title)
 
 		#Save to file
 		with open(title, "wb") as log:
 			pickle.dump(obj=kmeans, file=log, protocol=pickle.HIGHEST_PROTOCOL)
 
-		#draw_clusters_validation(kmeans)
+
+	if draw_validation:
+		draw_clusters_validation(kmeans)
+		draw_cluster_homogeneity(kmeans)
 
 
 def k_means(df, k):
@@ -75,9 +122,8 @@ def k_means(df, k):
 	"""
 	results = {}
 
-	kmeans = KMeans(n_clusters=k, n_init=clustering["runs"], init=clustering["init"], precompute_distances=clustering["precompute_distances"], algorithm=clustering["algorithm"])
-	columns = df.columns
-	columns.remove("idx")
+	kmeans = KMeans(n_clusters=k, n_init=kmeans_clustering["runs"], init=kmeans_clustering["init"], precompute_distances=kmeans_clustering["precompute_distances"], algorithm=kmeans_clustering["algorithm"])
+	columns = list(filter("idx".__ne__,  list(df.columns)))
 	kmeans.fit(df[columns])
 
 	# Centroid computation
@@ -110,6 +156,11 @@ def k_means(df, k):
 
 
 def draw_clusters_validation(kmeans):
+	"""
+	Draw the cluster validation graphs: show silhouette score (with asymptote), (graph)cohesion and (graph)separation.
+	:param 	kmeans:		The kmeans dictionary.
+	:return				Nothing.
+	"""
 	for combination in kmeans.keys():
 		entry = kmeans[combination]
 		cohesions = entry["cohesions"]
@@ -118,7 +169,7 @@ def draw_clusters_validation(kmeans):
 		graph_separations = entry["graph separation"]
 		silohuettes = entry["silhouettes"]
 
-		## Plotting
+		# Plotting
 		for metric in metrics:
 			cohesion = list(cohesions[metric].values())
 			separation = list(average_separations[metric])
@@ -128,16 +179,19 @@ def draw_clusters_validation(kmeans):
 			figure, axes = pp.subplots()
 			colors = [large_palette_full["navy"], large_palette_full["red"], large_palette_full["green"], large_palette_full["yellow"]]
 
-			axes.plot(clustering["ks"], cohesion, label="Cohesion", color=colors[0])
-			axes.plot(clustering["ks"], separation, label="Separation", color=colors[1])
-			axes.plot(clustering["ks"], scaled_silohuettes, label="Silhouette", color=colors[2])
+			axes.plot(kmeans_clustering["ks"], cohesion, label="Cohesion", color=colors[0])
+			axes.plot(kmeans_clustering["ks"], separation, label="Separation", color=colors[1])
+			axes.plot(kmeans_clustering["ks"], scaled_silohuettes, label="Silhouette", color=colors[2])
 			axes.axhline(y=silohuettes_asymptote_height, linestyle="dashed", color=colors[3])
 			title = combination + "\n[" + metric + "]"
 			axes.set_xlabel("Clusters")
 			legend = axes.legend(loc="best")
 			pp.title(title)
-			pp.savefig(title + ".png", bbox_extra_artists = [legend])
-			pp.savefig(title + ".svg", bbox_extra_artists = [legend])
+			pp.savefig(title.replace("\n", "") + ".png", bbox_extra_artists = [legend])
+			pp.savefig(title.replace("\n", "") + ".svg", bbox_extra_artists = [legend])
+			pp.clf()
+			pp.cla()
+			pp.close(figure)
 
 			# Graph measures
 			graph_cohesion = graph_cohesions[metric]
@@ -146,40 +200,64 @@ def draw_clusters_validation(kmeans):
 			scaled_silohuettes = list(map(lambda x: x * silohuettes_asymptote_height, list(silohuettes[metric])))
 
 			figure, axes = pp.subplots()
-			axes.plot(clustering["ks"], graph_cohesion, label="Graph cohesion", color=colors[0])
-			axes.plot(clustering["ks"], graph_separation, label="Graph separation", color=colors[1])
-			axes.plot(clustering["ks"], scaled_silohuettes, label="Silhouette", color=colors[2])
+			axes.plot(kmeans_clustering["ks"], graph_cohesion, label="Graph cohesion", color=colors[0])
+			axes.plot(kmeans_clustering["ks"], graph_separation, label="Graph separation", color=colors[1])
+			axes.plot(kmeans_clustering["ks"], scaled_silohuettes, label="Silhouette", color=colors[2])
 			axes.axhline(y=silohuettes_asymptote_height, linestyle="dashed", color=colors[3])
 			axes.set_xlabel("Clusters")
+			axes.grid()
 			legend = axes.legend(loc="best")
 			title = "Graph " + combination + "\n[" + metric + "]"
 			pp.title(title)
-			pp.savefig(title + ".png", bbox_extra_artists = [legend])
-			pp.savefig(title + ".svg", bbox_extra_artists = [legend])
+			pp.savefig(title.replace("\n", "") + ".png", bbox_extra_artists = [legend])
+			pp.savefig(title.replace("\n", "") + ".svg", bbox_extra_artists = [legend])
+			pp.close(figure)
 
 
-def draw_clustered_scatter_plot(df, centroids, colors=large_palette_full, title=""):
+def draw_cluster_homogeneity(kmeans, title_prefix=""):
+	"""
+	Draw cluster homogeneity for the provided kmeans object.
+	:param kmeans: 			The kmeans object.
+	:param title_prefix: 	Perfix for the plotted graph filename.
+	:return: 				Nothing.
+	"""
+	for combination, k in itertools.product(kmeans.keys(), kmeans_clustering["ks"]):
+		df = kmeans[combination][k][0]
+		columns = df.columns
+
+		# Plotting
+		for cluster_variable in columns:
+			frequencies_matrix = pd.crosstab(df[cluster_variable], df["cluster"])
+			frequencies_percentages = frequencies_matrix.div(frequencies_matrix.sum(1).astype(float), axis=0)
+			frequencies_percentages.plot(kind="bar", stacked=True, color=large_palette_full)
+			pp.gca().legend_.remove()
+			pp.savefig(title_prefix + "Heterogeneity for " + cluster_variable)
+			pp.cla()
+			pp.clf()
+
+
+def draw_clustered_scatter_plot(kmeans, colors=large_palette_full):
 	"""
 	Draw the scatter plot of the two variables.
-	:param df:					The
+	:param df:					The points dataframe.
 	:param colors:				The color palette to use.
-	:param title:				The plot title.
 	:return: 					Nothing.
 	"""
-	columns = df.columns
-	columns.remove("idx")
-	columns.remove("cluster")
-	df_prime = df[columns]
-	clusters_idxs = len(set(df["cluster"]))
+	for combination, k in itertools.product(kmeans.keys(), kmeans_clustering["ks"]):
+		df = kmeans[combination][k][0]
+		title = combination
+		columns = list(df.columns)
+		columns.remove("cluster")
 
-	figure, axes = pp.subplots()
+		for cluster_idx, color_key in zip(range(k), colors.keys()):
+			figure, axes = pp.subplots()
+			points = df[df["cluster"] == cluster_idx][columns]
+			axes.scatter(points[columns[0]], points[columns[	1]], color=colors[color_key])
 
-	for cluster_idx, color_key in zip(range(clusters_idxs), colors.keys()):
-		points = df[df["cluster"] == cluster_idx][columns]
-		axes.scatter(points[columns[0]], points[columns[1]], color=colors[color_key])
-		axes.scatter(centroids[0], centroids[1], color=colors[color_key])
-
-	axes.set_xlabel(labels_pretty_print[columns[0]])
-	axes.set_ylabel(labels_pretty_print[columns[1]])
-	pp.savefig(title + ".png")
-	pp.savefig(title + ".svg")
+			axes.set_xlabel(labels_pretty_print[columns[0]])
+			axes.set_ylabel(labels_pretty_print[columns[1]])
+			pp.savefig(title + ".png")
+			pp.savefig(title + ".svg")
+			pp.cla()
+			pp.clf()
+			pp.close(figure)

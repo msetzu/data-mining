@@ -48,12 +48,20 @@ labels_pretty_print["salary_int"] = "Salary"
 
 continuous_labels = labels[0:2]
 discrete_labels = labels[2:5]
-categorical_labels = labels[5:]
+categorical_labels = labels[5:-1]
+ordinal_labels = labels[-1:]
 correlated_labels = continuous_labels + discrete_labels + ["salary_int"]
 categorical_labels_pretty_prints = {
-    "Work_accident": ("Injured", "Safe"),
+    "Work_accident": ("Not Injured", "Injured"),
     "left": ("Stayed", "Left"),
-    "promotion_last_5years": ("Promoted", "Not promoted")
+    "promotion_last_5years": ("Not promoted", "Promoted"),
+    "sales": tuple(departments_pretty_prints)
+}
+ordinal_labels_pretty_prints = {
+    "salary": ("Low", "Medium", "High"),
+}
+ordered_ordinal_vars = {
+    "salary": ["low", "medium", "high"]
 }
 departments = set(data["sales"])
 
@@ -65,6 +73,9 @@ scatter = {
     "bins": 10,
     "replace": True
 }
+
+
+clusetering_types = ["normal", "discrete", "raw"]
 
 
 # Graphs
