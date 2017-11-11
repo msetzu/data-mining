@@ -20,6 +20,10 @@ kmeans_clustering = {
 	"ks": list(range(2,15)) + [20, 30, 40, 50, 75, 100]
 }
 
+dbscan_clustering = {
+	"neighbors": [25, 50, 100, 200]
+}
+
 metrics = ["euclidean", "minkowski", "cityblock", "chebyshev", "cosine"]
 
 
@@ -35,6 +39,14 @@ def cluster(hr):
 		thread = threading.Thread(target=cluster_kmeans, args=(dataset, clustering_var, title, start))
 		threads.append(thread)
 		thread.start()
+
+	# DBscan
+	for dataset, title, in zip(datasets, titles):
+		thread = threading.Thread(target=eps_growths, args=(dataset, "dbscan." + title))
+		threads.append(thread)
+		thread.start()
+
+
 
 
 # noinspection PyTypeChecker
@@ -261,3 +273,46 @@ def draw_clustered_scatter_plot(kmeans, colors=large_palette_full):
 			pp.cla()
 			pp.clf()
 			pp.close(figure)
+
+
+def eps_growths(df, dump_file):
+	"""
+	Draw the distance graph for the given dataframe according to the kth closest neighbor and distance measures.
+	Dump to file_name a dictionary
+			d := { entry := { metric := { k:= [d1, ..., dn]}}}
+	with the distances of the kth nearest neighbor according to metric per given entry.
+	:param df: 		The DataFrame object.
+	:param title: 	Descriptive string for the provided dataframe, used to save on disk the plotted graphs.
+	:return: 		A dictionary
+
+	"""
+	var_x = list(df.columns)[0]
+	var_y = list(df.columns)[1]
+	entry = var_x + " - " + var_y
+	m = entries
+
+	dbscan_eps = {}
+	dbscan_eps[entry] = {}
+
+	for metric in metrics:
+		dbscan_eps[entry][metric] = {}
+		distance_matrix = cdist(df, df, metric=metric)
+		distance_matrix.sort(axis=1)
+		distance_matrix.sort(axis=0)
+
+		for k in dbscan_clustering["neighbors"]:
+			figure, axes = pp.subplots()
+			distances = distance_matrix[:,k]
+			dbscan_eps[entry][metric][k] = distances
+			axes.plot(range(m), distances)
+			axes.set_title("Distance for " + str(k) + "th neighbor [" + metric + "]" + " " + entry)
+			axes.set_xlabel("Points at distance eps")
+			axes.set_ylabel("Distance")
+			axes.grid()
+			pp.savefig(entry + ":" + str(k) + " [" + metric + "]" + " " + entry + ".png")
+			pp.clf()
+			pp.cla()
+			pp.close(figure)
+
+	with open("dbscan." + dump_file, "wb") as log:
+		pickle.dump(dbscan_eps, log, protocol=pickle.HIGHEST_PROTOCOL)
