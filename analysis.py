@@ -36,8 +36,10 @@ def data_analysis(hr):
             draw_ordinal_distribution(hr.discrete[var], var_pretty_prints[var], var_pretty_prints[var] + " distribution")
 
     if parsed_arguments["draw_correlation"]:
-        draw_correlation_matrix(hr.normal[correlated_labels].corr(), pretty_prints[:5] + [pretty_prints[-1]],
+        draw_correlation_matrix(hr.normal[correlated_labels].corr(), short_pretty_prints[:5] + [short_pretty_prints[-1]],
                                 normalised=True)
+        draw_correlation_matrix(hr.discrete[correlated_labels].corr(), short_pretty_prints[:5] + [short_pretty_prints[-1]],
+                                normalised=False)
     if parsed_arguments["promotions-per-project"]:
         promotions_per_project(hr)
     if parsed_arguments["left-per-department"]:
@@ -217,7 +219,6 @@ def draw_ordinal_distribution(var_val, var_pretty_print, title):
     pp.savefig(title + ".png")
 
 
-
 def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False):
     figure, axes = pp.subplots()
 
@@ -236,16 +237,19 @@ def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False)
     # Hide borders
     axes.spines['top'].set_visible(False)
     axes.spines['right'].set_visible(False)
-    #pp.tight_layout()
+    pp.tight_layout()
     pp.draw()
 
     if not normalised:
         axes.set_title('Correlation matrix', fontsize=12, fontweight='bold')
         pp.savefig('Correlation matrix.png')
+        pp.savefig('Correlation matrix.svg')
     else:
         axes.set_title('Correlation matrix', fontsize=12, fontweight='bold')
         pp.savefig('Correlation matrix for normalised data.png')
+        pp.savefig('Correlation matrix for normalised data.svg')
 
+    pp.show()
 
 def draw_scatter_plot(var_x, var_y, var_x_pretty_print, var_y_pretty_print, title):
     """
