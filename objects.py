@@ -75,3 +75,4 @@ class HR:
 		salaries_discrete = {"low": 10000, "medium": 25000, "high": 50000}
 		return list(map(lambda x: salaries_discrete[x], salaries))
 
+	

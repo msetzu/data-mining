@@ -52,8 +52,8 @@ def data_analysis(hr):
         line_plot_before(hr.data[var], labels_pretty_print[var])
         to_log = draw_discrete_log_transformation(hr, var, labels_pretty_print[var])
         line_plot_after(to_log, labels_pretty_print[var])
-    if parsed_arguments["left-per-project"]:
-        left_per_project(hr)    
+    if parsed_arguments["time-company-project"]:
+        time_company_per_project(hr)    
 
 
 def parse_arguments():
@@ -66,7 +66,7 @@ def parse_arguments():
     parser.add_option("--promotions-per-project", action="store_true", dest="promotions_per_project", help="Show promotions rate per number of project")
     parser.add_option("--scatter-plots", action="store_true", dest="scatter_plots", help="Plot scatter plots")
     parser.add_option("--log", action="store_true", dest="log", help="Plot log transformation")
-    parser.add_option("--left-per-project", action="store_true", dest="left_per_project", help="Plot left people with respect to numbers of project")
+    parser.add_option("--time-company-project", action="store_true", dest="time_company_per_project", help="Plota bar chart with numbers of project and time spend company")
    
     (options, args) = parser.parse_args()
     arguments["draw_correlation"] = options.correlation
@@ -75,7 +75,7 @@ def parse_arguments():
     arguments["salary-per-department"] = options.salary_per_department
     arguments["promotions-per-project"] = options.promotions_per_project
     arguments["log"] = options.log
-    arguments["left-per-project"] = options.left_per_project
+    arguments["time-company-project"] = options.time_company_per_project
 
     if not (options.distributions is None):
         arguments["distributions"] = options.distributions.split(",")
@@ -410,30 +410,39 @@ def promotions_per_project(hr):
                                        ticks = list(map(str, projects_range)),
                                        colors = settings.large_palette_stacked)
 
-    pp.title("Promotion rate per number of projects")
-    pp.savefig("Promotion rate per number of projects.png")
+    pp.title("Time spent in company per number of projects")
+    pp.savefig("Time spent company per number of projects.png")
     pp.draw()
 
-def left_per_project(hr):
+def time_company_per_project(hr):
     projects_range = range(min(list(hr.data["number_project"])), max(list(hr.data["number_project"])) + 1)
-    left_per_project = {}
+    time_company_per_project = {}
+    time_company_buckets = 3
+    cat_years = hr.data["time_spend_company"]
+    cat_time = []
 
-    for bucket in [1, 0]:
-        left_per_project[bucket] = []
+    for c in range(0, len(cat_years)):
+
+        if cat_years[c] < 3:
+            cat_time.append("few")
+        elif cat_years[c] < 7:
+            cat_time.append("medium")
+        else:
+            cat_time.append("high")        
+
+    for bucket in range(time_company_buckets):
+        time_company_per_project[bucket] = []
         for nr_project in projects_range:
-            left_per_project[bucket].append(
-                data[(data["left"] == bucket) &
+            time_company_per_project[bucket].append(
+                data[(cat_time == bucket) &
                      (data["number_project"] == nr_project)]["number_project"].shape[0])
 
-    draw_categorical_distribution_stacked(vars = left_per_project,
-                                       var_pretty_prints = list(categorical_labels_pretty_prints["left"]),
-                                       title = "Number of people according to number of projects",
+    draw_discrete_distribution_stacked(vars = time_company_per_project,
+                                       var_pretty_prints = list(categorical_labels_pretty_prints["time_spend_company"]),
+                                       title = "time in company according to number of projects",
                                        ticks = list(map(str, projects_range)),
                                        colors = settings.large_palette_stacked)
 
-    pp.title("Number of people who left per number of projects")
-    pp.savefig("Number of people who left per number of projects.png")
-    pp.draw()
 
 def draw_discrete_log_transformation(hr, var, var_pretty_print ):
     """
@@ -481,7 +490,6 @@ def line_plot_before(values_before, var_pretty_print):
     axes.set_xlabel(str(var_pretty_print))
     axes.set_ylabel('range')
     pp.savefig(str(var_pretty_print)+'Log plot before.png')
-
 def line_plot_after(values_after, var_pretty_print):
     """
     Draw the variables' line plot (values and range) after the log transformation.

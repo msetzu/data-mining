@@ -53,7 +53,8 @@ correlated_labels = continuous_labels + discrete_labels + ["salary_int"]
 categorical_labels_pretty_prints = {
     "Work_accident": ("Injured", "Safe"),
     "left": ("Stayed", "Left"),
-    "promotion_last_5years": ("Promoted", "Not promoted")
+    "promotion_last_5years": ("Promoted", "Not promoted"),
+    "time_spend_company" : ("few", "medium", "high")
 }
 departments = set(data["sales"])
 
