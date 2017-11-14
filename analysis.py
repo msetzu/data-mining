@@ -436,30 +436,44 @@ def left_per_project(hr):
     pp.draw()
 
 def draw_discrete_log_transformation(hr, var, var_pretty_print ):
-        to_log_tsc = []
+    """
+    Draw the logarithm transformation for discrete values.
+    :param hr: 					The data object.
+    :param var: 				The variable whose log transformation to draw.
+    :param var_pretty_print: 	The variable's pretty print name.
+    :return: 					The data transformated.
+    """
+    to_log_tsc = []
 
-        for i in range(len(hr.data[var])):
-            to_log_tsc.append((np.log(hr.data[var][i])*0.54)+0.32)
+    for i in range(len(hr.data[var])):
+        to_log_tsc.append((np.log(hr.data[var][i])*0.54)+0.32)
 
-        var_val_std_tsc = np.std(to_log_tsc)
-        var_val_mean_tsc = np.mean(to_log_tsc)
-        num_bins_tsc = int(np.ceil(np.log2(len(to_log_tsc))) + 1)
+    var_val_std_tsc = np.std(to_log_tsc)
+    var_val_mean_tsc = np.mean(to_log_tsc)
+    num_bins_tsc = int(np.ceil(np.log2(len(to_log_tsc))) + 1)
 
-        figure, axes = pp.subplots()
+    figure, axes = pp.subplots()
 
-        n, bins, patches = axes.hist(to_log_tsc, num_bins_tsc, label='log_transf', color=palette['main'], normed=False,
+    n, bins, patches = axes.hist(to_log_tsc, num_bins_tsc, label='log_transf', color=palette['main'], normed=False,
                                     stacked=True)
-        y = mlab.normpdf(bins, var_val_mean_tsc, var_val_std_tsc) * sum(n * np.diff(bins))
+    y = mlab.normpdf(bins, var_val_mean_tsc, var_val_std_tsc) * sum(n * np.diff(bins))
 
-        axes.plot(bins, y, '.-.', color=palette['secondary'], label="Gaussian approximation")
-        axes.set_xlabel(str(var_pretty_print))
-        axes.set_ylabel('Employees')
-        axes.set_title(r'Log distribution'+str(var_pretty_print))
-        pp.tight_layout()
-        pp.savefig(str(var_pretty_print)+'log_distr.png')
-        return to_log_tsc
+    axes.plot(bins, y, '.-.', color=palette['secondary'], label="Gaussian approximation")
+    axes.set_xlabel(str(var_pretty_print))
+    axes.set_ylabel('Employees')
+    axes.set_title(r'Log distribution'+str(var_pretty_print))
+    pp.tight_layout()
+    pp.savefig(str(var_pretty_print)+'log_distr.png')
+    return to_log_tsc
 
 def line_plot_before(values_before, var_pretty_print):
+    """
+    Draw the variables' line plot (values and range) before the log transformation.
+    :param hr: 					The data object.
+    :param var: 				The variable whose line plot to draw.
+    :param var_pretty_print: 	The variable's pretty print name.
+    :return: 					Nothing.
+    """
     to_sort_old = values_before
     old_sorted = to_sort_old.sort_values(ascending=False)
     figure, axes = pp.subplots()
@@ -468,7 +482,14 @@ def line_plot_before(values_before, var_pretty_print):
     axes.set_ylabel('range')
     pp.savefig(str(var_pretty_print)+'Log plot before.png')
 
-def line_plot_after(values_after, var_pretty_print):    
+def line_plot_after(values_after, var_pretty_print):
+    """
+    Draw the variables' line plot (values and range) after the log transformation.
+    :param hr: 					The data object.
+    :param var: 				The variable whose line plot to draw.
+    :param var_pretty_print: 	The variable's pretty print name.
+    :return: 					Nothing.
+    """    
     new_sorted = values_after 
     new_sorted.sort(reverse=True)
     figure, axes = pp.subplots()
