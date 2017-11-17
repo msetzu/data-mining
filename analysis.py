@@ -263,7 +263,7 @@ def draw_scatter_plot(var_x, var_y, var_x_pretty_print, var_y_pretty_print, titl
     :Note: For the discrete features there is a hr.discretize in objects. For now only last_eval (but who knows)
     """
     figure, axes = pp.subplots()
-    axes.scatter(var_x, var_y, color=palette["main"])
+    axes.scatter(var_x, var_y, color="#C8C8A9")
     axes.set_xlabel(var_x_pretty_print)
     axes.set_ylabel(var_y_pretty_print)
     pp.savefig(title + ".png")
@@ -294,7 +294,7 @@ def draw_discrete_distribution_stacked(vars, var_pretty_prints, title, ticks, le
 
     if list(vars.keys()).count("stack") == 0:
         for var, pretty_print, color_key, offset in zip(vars, var_pretty_prints, colors, offsets):
-            axes.barh(x=offset, height=vars[var], color=colors[color_key], width=width, label=pretty_print)
+            axes.bar(x=offset, height=vars[var], color=colors[color_key], width=width, label=pretty_print)
 
         if len(top_text) > 0:
             heights = list(map(lambda patch: patch.get_height(), axes.patches))

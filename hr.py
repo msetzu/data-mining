@@ -6,7 +6,7 @@ from objects import HR
 
 # Main
 if __name__ == '__main__':
-	hr = HR(data)
+    hr = HR(data)
 
-	data_analysis(hr)
-	cluster(hr)
+    data_analysis(hr)
+    cluster(hr)
