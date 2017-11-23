@@ -66,7 +66,7 @@ def parse_arguments():
     parser.add_option("--promotions-per-project", action="store_true", dest="promotions_per_project", help="Show promotions rate per number of project")
     parser.add_option("--scatter-plots", action="store_true", dest="scatter_plots", help="Plot scatter plots")
     parser.add_option("--log", action="store_true", dest="log", help="Plot log transformation")
-    parser.add_option("--time-company-project", action="store_true", dest="time_company_per_project", help="Plota bar chart with numbers of project and time spend company")
+    parser.add_option("--time-company-project", action="store_true", dest="time_company_per_project", help="Plot a bar chart with numbers of project and time spend company")
    
     (options, args) = parser.parse_args()
     arguments["draw_correlation"] = options.correlation
@@ -420,91 +420,26 @@ def time_company_per_project(hr):
     time_company_buckets = 3
     cat_years = hr.data["time_spend_company"]
     cat_time = []
-
     for c in range(0, len(cat_years)):
-
         if cat_years[c] < 3:
             cat_time.append("few")
         elif cat_years[c] < 7:
             cat_time.append("medium")
         else:
-            cat_time.append("high")        
+            cat_time.append("high")
 
     for bucket in range(time_company_buckets):
         time_company_per_project[bucket] = []
         for nr_project in projects_range:
             time_company_per_project[bucket].append(
-                data[(cat_time == bucket) &
+                [data[(data["time_spend..."] in time_buckets & data["left" == 1]].shape[0]for time_bucket in time_buckets]
+                data[(cat_time == bucket) |
                      (data["number_project"] == nr_project)]["number_project"].shape[0])
 
     draw_discrete_distribution_stacked(vars = time_company_per_project,
-                                       var_pretty_prints = list(categorical_labels_pretty_prints["time_spend_company"]),
+                                       var_pretty_prints = list(categorical_labels_pretty_prints["promotion_last_5years"]),
                                        title = "time in company according to number of projects",
                                        ticks = list(map(str, projects_range)),
                                        colors = settings.large_palette_stacked)
 
 
-def draw_discrete_log_transformation(hr, var, var_pretty_print ):
-    """
-    Draw the logarithm transformation for discrete values.
-    :param hr: 					The data object.
-    :param var: 				The variable whose log transformation to draw.
-    :param var_pretty_print: 	The variable's pretty print name.
-    :return: 					The data transformated.
-    """
-    to_log_tsc = []
-
-    for i in range(len(hr.data[var])):
-        to_log_tsc.append((np.log(hr.data[var][i])*0.54)+0.32)
-
-    var_val_std_tsc = np.std(to_log_tsc)
-    var_val_mean_tsc = np.mean(to_log_tsc)
-    num_bins_tsc = int(np.ceil(np.log2(len(to_log_tsc))) + 1)
-
-    figure, axes = pp.subplots()
-
-    n, bins, patches = axes.hist(to_log_tsc, num_bins_tsc, label='log_transf', color=palette['main'], normed=False,
-                                    stacked=True)
-    y = mlab.normpdf(bins, var_val_mean_tsc, var_val_std_tsc) * sum(n * np.diff(bins))
-
-    axes.plot(bins, y, '.-.', color=palette['secondary'], label="Gaussian approximation")
-    axes.set_xlabel(str(var_pretty_print))
-    axes.set_ylabel('Employees')
-    axes.set_title(r'Log distribution'+str(var_pretty_print))
-    pp.tight_layout()
-    pp.savefig(str(var_pretty_print)+'log_distr.png')
-    return to_log_tsc
-
-def line_plot_before(values_before, var_pretty_print):
-    """
-    Draw the variables' line plot (values and range) before the log transformation.
-    :param hr: 					The data object.
-    :param var: 				The variable whose line plot to draw.
-    :param var_pretty_print: 	The variable's pretty print name.
-    :return: 					Nothing.
-    """
-    to_sort_old = values_before
-    old_sorted = to_sort_old.sort_values(ascending=False)
-    figure, axes = pp.subplots()
-    axes.plot(range(0, len(old_sorted)), old_sorted)
-    axes.set_xlabel(str(var_pretty_print))
-    axes.set_ylabel('range')
-    pp.savefig(str(var_pretty_print)+'Log plot before.png')
-def line_plot_after(values_after, var_pretty_print):
-    """
-    Draw the variables' line plot (values and range) after the log transformation.
-    :param hr: 					The data object.
-    :param var: 				The variable whose line plot to draw.
-    :param var_pretty_print: 	The variable's pretty print name.
-    :return: 					Nothing.
-    """    
-    new_sorted = values_after 
-    new_sorted.sort(reverse=True)
-    figure, axes = pp.subplots()
-    axes.plot(range(0, len(new_sorted)), new_sorted, '-')
-    axes.set_xlabel(str(var_pretty_print))
-    axes.set_ylabel('range')
-    pp.savefig(str(var_pretty_print)+'Log plot after.png')
-
-
-    
