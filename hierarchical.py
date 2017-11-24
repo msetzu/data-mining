@@ -18,32 +18,42 @@ from settings import *
 from optparse import OptionParser
 from scipy.cluster.hierarchy import linkage, dendrogram
 
-def data_analysis(hr):
+def hierarchical_analysis():
     parsed_arguments = parse_arguments()
     metrics = ["euclidean", "minkowski", "cityblock", "chebyshev", "cosine"]
     metrics2 = ["euclidean", "l1", "l2", "manhattan", "cosine"]
-
+    variables = ["all", "project_salary", "avg_hours_time_company", "avg_hours_project"]
 
     if parsed_arguments["single"]:
         for metric in metrics:
-            plot_dendrogram(hr, metric, "single", 3)
+            for variable in variables:
+                hr = clean_data(pd.read_csv("hr.csv"), variable)
+                plot_dendrogram(hr, metric, "single", variable)
     if parsed_arguments["complete"]:
-        #for metric in metrics:
-            #plot_dendrogram(hr, metric, "complete", 3)
-        for metric in metrics2:
-            calculate_sil(hr, metric, "complete")    
+        for metric in metrics:
+            for variable in variables:
+                hr = clean_data(pd.read_csv("hr.csv"), variable)
+                plot_dendrogram(hr, metric, "complete", variable) 
     if parsed_arguments["average"]:
         for metric in metrics:
-            plot_dendrogram(hr, metric, "average", 3)
+            for variable in variables:
+                hr = clean_data(pd.read_csv("hr.csv"), variable)
+                plot_dendrogram(hr, metric, "average", variable)
     if parsed_arguments["weighted"]:
         for metric in metrics:
-            plot_dendrogram(hr, metric, "weighted")
+            for variable in variables:
+                hr = clean_data(pd.read_csv("hr.csv"), variable)
+                plot_dendrogram(hr, metric, "weighted", variable)
     if parsed_arguments["median"]:
         for metric in metrics:
-            plot_dendrogram(hr, metric, "median")
+            for variable in variables:
+                hr = clean_data(pd.read_csv("hr.csv"), variable)
+                plot_dendrogram(hr, metric, "median", variable)
     if parsed_arguments["ward"]:
         for metric in metrics:
-            plot_dendrogram(hr, metric, "ward")
+            for variable in variables:
+                hr = clean_data(pd.read_csv("hr.csv"), variable)
+                plot_dendrogram(hr, metric, "ward", variable)
 
 
 def parse_arguments():
@@ -67,15 +77,19 @@ def parse_arguments():
     return arguments
 
 def clean_data(hr, variables):
-    if variables == 1:
+    if variables == "all":
+        #all variables except categorical attrib and binary
         hr = hr.drop(['Work_accident','left','sales'], axis=1)
         #clean for salary: int low - 10000 medium - 25000 high - 50000
         hr = hr.replace(["low", "medium", "high"] , [10000, 25000, 50000])
-    elif variables == 2:
-        #tengo solo num di progetti, left e salario
+    elif variables == "project_salary":
+        #tengo solo num di progetti, salario
         hr = hr.drop(['satisfaction_level','average_montly_hours','last_evaluation','time_spend_company','Work_accident', 'left', 'promotion_last_5years','sales'], axis=1)
         hr = hr.replace(["low", "medium", "high"] , [10000, 25000, 50000])
-    elif variables == 3:
+    elif variables == "avg_hours_time_company":
+        #avg hours time in company
+        hr = hr.drop(['satisfaction_level','last_evaluation','number_project','Work_accident','left','promotion_last_5years','sales','salary'], axis=1)
+    elif variables == "avg_hours_project":
         #tengo solo mum progetti avg mon hours
         hr = hr.drop(['satisfaction_level','last_evaluation','time_spend_company','Work_accident','left','promotion_last_5years','sales','salary'], axis=1)    
     return hr
@@ -91,7 +105,7 @@ def calculate_sil(hr, metric, method):
     print (dict(zip(bins, hist)))
     print (silhouette_score(hr, nlinkage.labels_))     
     
-def plot_dendrogram(hr, metric, method, print):
+def plot_dendrogram(hr, metric, method, variables):
     data_dist = pdist(hr.values, metric=metric)
     data_link = linkage(data_dist, method=method, metric=metric)
     pp.xlabel('matrix '+metric)
@@ -99,23 +113,16 @@ def plot_dendrogram(hr, metric, method, print):
     dendrogram(
         data_link,
         truncate_mode='lastp',  # show only the last p merged clusters
-        p=20,  # show only the last p merged clusters
+        p=10,  # show only the last p merged clusters
         show_leaf_counts=True,  # otherwise numbers in brackets are counts
         leaf_rotation=90.,
         leaf_font_size=12.,
         show_contracted=True,  # to get a distribution impression in truncated branches
     )
-
-    if print == 1:
-        pp.title('Hierarchical with all variables')
+    pp.title('Hierarchical '+variables+' '+metric+' '+method)
         #metti show e poi salvi dopo
-        pp.savefig('H_all_variables_'+metric+'_'+method+'.png')
-    elif print == 2:
-        pp.title('Hierarchical with left, number of projects, salary')
-        pp.savefig('H_projects_left_salary_'+metric+'_'+method+'.png')
-    elif print == 3:
-        pp.title('Hierarchical with number of projects and avg monthly hours')
-        pp.savefig('H_projects_avg_hours_'+metric+'_'+method+'.png')   
+    pp.savefig(variables+'_'+metric+'_'+method+'.png')
+
    
 
 
@@ -124,8 +131,7 @@ if __name__ == '__main__':
     sys.setrecursionlimit(15000)
     #silo per un solo punto con ciclo for 
     #per db scan: assumendo un min point di 4, prendere la distanza maggiore dal il core, per ogni core, ordinare e plottare. Ad esempio, aggiungere la dist dal 4 punto, ordinare in ordine crescente di distanza dal core, plottare usare quel valore come parametri
-    hr = clean_data(pd.read_csv("hr.csv"), 3)
     
-    data_analysis(hr)
+    hierarchical_analysis()
 
 
