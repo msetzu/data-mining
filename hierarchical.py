@@ -44,7 +44,7 @@ def hierarchical_analysis():
             for variable in variables:
                 hr = clean_data(pd.read_csv("hr.csv"), variable)
                 plot_dendrogram(hr, metric, "weighted", variable)
-    if parsed_arguments["median"]:
+    if parsed_arguments["median"]: 
         for metric in metrics:
             for variable in variables:
                 hr = clean_data(pd.read_csv("hr.csv"), variable)
