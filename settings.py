@@ -8,40 +8,41 @@ bins = 10
 
 # Data analysis
 analysis = {
-    'bins': 10,
-    'balance_threshold': 0.1
+    "bins": 10,
+    "balance_threshold": 0.1
 }
 
 # Plot labels
-labels = ['satisfaction_level',
-          'average_montly_hours',
-          'last_evaluation',
-          'time_spend_company',
-          'number_project',
-          'Work_accident',
-          'left',
-          'promotion_last_5years',
-          'sales',
-          'salary']
-pretty_prints = ['Self-reported satisfaction',
-                 'AVG Monthly hours',
-                 'Time since last valuation, in years',
-                 'Time in company, in years',
-                 'Projects',
-                 'Accidents',
-                 'Left',
-                 'Promoted (last 5 years)',
-                 'Department',
-                 'Salary']
-short_pretty_prints = ["Satisfaction",
+labels = ["satisfaction_level",
+          "average_montly_hours",
+          "last_evaluation",
+          "time_spend_company",
+          "number_project",
+          "Work_accident",
+          "left",
+          "promotion_last_5years",
+          "sales",
+          "salary"]
+pretty_prints = ["Self-reported satisfaction",
+                 "AVG Monthly hours",
+                 "Time since last valuation, in years",
+                 "Time in company, in years",
+                 "Projects",
+                 "Accidents",
+                 "Left",
+                 "Promoted (last 5 years)",
+                 "Department",
+                 "Salary"]
+short_pretty_prints = ["Injuries",
                        "Work hours",
                        "Last evaluation",
-                       "Projects",
-                       "Injuries",
                        "Left",
+                       "Projects",
                        "Promotion",
-                       "Dpt.",
-                       "Wage"]
+                       "Wage",
+                       "Satisfaction",
+                       "Years in company",
+                       "Dpt."]
 departments_pretty_prints = ["Information Technology",
                              "R&D",
                              "Accounting",
@@ -53,6 +54,7 @@ departments_pretty_prints = ["Information Technology",
                              "Support",
                              "Technical"]
 labels_pretty_print = {k: v for k, v in zip(labels, pretty_prints)}
+short_labels_pretty_print = {k: v for k, v in zip(labels, short_pretty_prints)}
 labels_pretty_print["salary_int"] = "Salary"
 
 continuous_labels = labels[0:2]
@@ -89,11 +91,11 @@ clusetering_types = ["normal", "discrete", "raw"]
 
 # Graphs
 palette = {
-    'main': '#FE4365',
-    'complementary': '#FC9D9A',
-    'pr_complementary': '#F9CDAD',
-    'sc_complementary': '#C8C8A9',
-    'secondary': '#83AF9B'
+    "main": "#FE4365",
+    "complementary": "#FC9D9A",
+    "pr_complementary": "#F9CDAD",
+    "sc_complementary": "#C8C8A9",
+    "secondary": "#83AF9B"
 }
 
 round_palette = {
@@ -149,13 +151,13 @@ large_palette_stacked = {
     "stack": large_palette["orange"]
 }
 
-cmap_pale_pink = LinearSegmentedColormap.from_list('Pale pink',
-                                                   [palette['pr_complementary'], palette['main']],
+cmap_pale_pink = LinearSegmentedColormap.from_list("Pale pink",
+                                                   [palette["pr_complementary"], palette["main"]],
                                                    N=1000000)
-cmap_pale_pink_and_green = LinearSegmentedColormap.from_list('Pale pink&green',
-                                                            [palette['main'],
-                                                             palette['complementary'],
-                                                             palette['pr_complementary'],
-                                                             palette['sc_complementary'],
-                                                             palette['secondary']],
+cmap_pale_pink_and_green = LinearSegmentedColormap.from_list("Pale pink&green",
+                                                            [palette["main"],
+                                                             palette["complementary"],
+                                                             palette["pr_complementary"],
+                                                             palette["sc_complementary"],
+                                                             palette["secondary"]],
                                                              N=1000000)
