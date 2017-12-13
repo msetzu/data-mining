@@ -16,7 +16,7 @@ import sys
 import settings
 from settings import *
 from optparse import OptionParser
-from scipy.cluster.hierarchy import linkage, dendrogram
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
 
 def hierarchical_analysis():
     parsed_arguments = parse_arguments()
@@ -25,15 +25,16 @@ def hierarchical_analysis():
     variables = ["all", "project_salary", "avg_hours_time_company", "avg_hours_project"]
 
     if parsed_arguments["single"]:
-        for metric in metrics:
+        for metric in metrics2:
             for variable in variables:
                 hr = clean_data(pd.read_csv("hr.csv"), variable)
                 plot_dendrogram(hr, metric, "single", variable)
     if parsed_arguments["complete"]:
-        for metric in metrics:
+        for metric in metrics2:
             for variable in variables:
                 hr = clean_data(pd.read_csv("hr.csv"), variable)
-                plot_dendrogram(hr, metric, "complete", variable) 
+                #plot_dendrogram(hr, metric, "complete", variable) 
+                calculate_sil(hr, metric, "complete", variable)
     if parsed_arguments["average"]:
         for metric in metrics:
             for variable in variables:
@@ -94,16 +95,21 @@ def clean_data(hr, variables):
         hr = hr.drop(['satisfaction_level','last_evaluation','time_spend_company','Work_accident','left','promotion_last_5years','sales','salary'], axis=1)    
     return hr
 
-def calculate_sil(hr, metric, method):
+def calculate_sil(hr, metric, method, variable):
 
     #connectivity = kneighbors_graph(hr, n_neighbors=100, include_self=False)
     #connectivity = 0.5 * (connectivity + connectivity.T)
     nlinkage = AgglomerativeClustering(n_clusters=4, linkage=method, affinity=metric) #connectivity=connectivity)
-    nlinkage.fit(hr)
+    nlinkage.fit(hr)   
     #provare con dump delle link labels
     hist, bins = np.histogram(nlinkage.labels_, bins=range(0, len(set(nlinkage.labels_)) + 1))
+    fig, ax = pp.subplots()
+    ax.bar(bins[:-1], hist, width=np.diff(bins), ec="k", align="edge")
+    print(variable)
+    print('con la metrica '+metric+' con il metodo '+method)
     print (dict(zip(bins, hist)))
-    print (silhouette_score(hr, nlinkage.labels_))     
+    print (silhouette_score(hr, nlinkage.labels_))
+    pp.savefig(variable+' '+metric+' '+method+'.png')  
     
 def plot_dendrogram(hr, metric, method, variables):
     data_dist = pdist(hr.values, metric=metric)
@@ -113,7 +119,7 @@ def plot_dendrogram(hr, metric, method, variables):
     dendrogram(
         data_link,
         truncate_mode='lastp',  # show only the last p merged clusters
-        p=10,  # show only the last p merged clusters
+        p=40,  # show only the last p merged clusters
         show_leaf_counts=True,  # otherwise numbers in brackets are counts
         leaf_rotation=90.,
         leaf_font_size=12.,
@@ -121,17 +127,44 @@ def plot_dendrogram(hr, metric, method, variables):
     )
     pp.title('Hierarchical '+variables+' '+metric+' '+method)
         #metti show e poi salvi dopo
-    pp.savefig(variables+'_'+metric+'_'+method+'.png')
+    pp.show()    
+    #pp.savefig(variables+'_'+metric+'_'+method+'.png')
 
-   
+def out_clusters(hr, metric, method):   
+    data_dist = pdist(hr.values, metric=metric)
+    assignments = fcluster(linkage(data_dist, method=method),4, 'maxclust')
+    for e in assignments:
+        print(e)
+    ass_tos = pd.Series(assignments, name='X')
+
+    result = pd.concat([hr, ass_tos], axis=1)
+    group1 = open("Gruppo1", 'w')
+    group2= open("Gruppo2", 'w')
+    group3 = open("Gruppo3", 'w')
+    group4 = open("Gruppo4", 'w')
+    for index, row in result.iterrows():
+        #print(row[6])
+        if(row["X"] == 1):
+            #print(row['X'])
+            group1.write(str(row))
+        elif(row["X"] == 2):
+            group2.write(str(row))
+        elif(row["X"] == 3):
+            group3.write(str(row))
+        elif(row["X"] == 4):
+            group4.write(str(row))            
 
 
+        
 if __name__ == '__main__':
 
     sys.setrecursionlimit(15000)
     #silo per un solo punto con ciclo for 
     #per db scan: assumendo un min point di 4, prendere la distanza maggiore dal il core, per ogni core, ordinare e plottare. Ad esempio, aggiungere la dist dal 4 punto, ordinare in ordine crescente di distanza dal core, plottare usare quel valore come parametri
-    
-    hierarchical_analysis()
-
+    hr = clean_data(pd.read_csv("hr.csv"), "all")
+    out_clusters(hr, "euclidean", "complete")
+    #hierarchi#cal_analysis()
+    #hr = clean_data(pd.read_csv("hr.csv"), "all")
+    #calculate_sil(hr, 'euclidean', 'complete', "all")
+    #plot_dendrogram(hr, 'euclidean', 'ward', 'all')
 

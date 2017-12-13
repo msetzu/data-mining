@@ -1,0 +1,105 @@
+['2_Project', '0.75_Evaluation', '0_Accident'] --> 1_Left lift 2.97407 conf 70.8075
+['0.25_Satisfaction', '1.0_Evaluation'] --> 1_Left lift 2.99061 conf 71.2013
+['2_Project', '0.75_Evaluation', '0_Accident', '0_Promotion'] --> 1_Left lift 2.99101 conf 71.2108
+['0.5_Satisfaction', '0.75_Evaluation', '5_Time', '0_Accident'] --> 1_Left lift 2.99599 conf 71.3293
+['0.25_Satisfaction', '1.0_Evaluation', '0_Promotion'] --> 1_Left lift 3.00449 conf 71.5317
+['0.5_Satisfaction', '0.75_Evaluation', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.01545 conf 71.7926
+['0.5_Evaluation', '0.5_Satisfaction', '0_Accident'] --> 1_Left lift 3.01681 conf 71.825
+['7_Project', '5_Time'] --> 1_Left lift 3.02524 conf 72.0257
+['0.5_Evaluation', '0.5_Satisfaction', '0_Accident', '0_Promotion'] --> 1_Left lift 3.02997 conf 72.1382
+['7_Project', '5_Time', '0_Promotion'] --> 1_Left lift 3.0544 conf 72.7199
+['0.5_Satisfaction', '150_Hours'] --> 1_Left lift 3.06729 conf 73.0268
+['0.5_Satisfaction', '150_Hours', '0_Promotion'] --> 1_Left lift 3.09046 conf 73.5784
+['0.5_Satisfaction', '150_Hours', '0.75_Evaluation'] --> 1_Left lift 3.09753 conf 73.7467
+['0.5_Satisfaction', '150_Hours', '0.75_Evaluation', '0_Promotion'] --> 1_Left lift 3.11252 conf 74.1036
+['0.25_Satisfaction', '1.0_Evaluation', '0_Accident'] --> 1_Left lift 3.13094 conf 74.5423
+['0.25_Satisfaction', '1.0_Evaluation', '0_Accident', '0_Promotion'] --> 1_Left lift 3.13911 conf 74.7368
+['7_Project', '5_Time', '0_Accident'] --> 1_Left lift 3.15754 conf 75.1754
+['2_Project', '5_Time'] --> 1_Left lift 3.16081 conf 75.2533
+['2_Project', '5_Time', '0_Promotion'] --> 1_Left lift 3.16859 conf 75.4386
+['7_Project', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.17152 conf 75.5084
+['0.5_Satisfaction', '150_Hours', '0_Accident'] --> 1_Left lift 3.19317 conf 76.0238
+['0.5_Satisfaction', '150_Hours', '0_Accident', '0_Promotion'] --> 1_Left lift 3.21008 conf 76.4264
+['2_Project', '5_Time', '0_Accident'] --> 1_Left lift 3.26318 conf 77.6907
+['0.25_Satisfaction', '1.0_Evaluation', '5_Time'] --> 1_Left lift 3.26399 conf 77.7098
+['0.25_Satisfaction', '1.0_Evaluation', '5_Time', '0_Promotion'] --> 1_Left lift 3.26725 conf 77.7875
+['2_Project', '0.75_Evaluation', '5_Time'] --> 1_Left lift 3.26727 conf 77.7881
+['2_Project', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.27423 conf 77.9536
+['2_Project', '0.75_Evaluation', '5_Time', '0_Promotion'] --> 1_Left lift 3.27649 conf 78.0075
+['0.5_Evaluation', '0.5_Satisfaction', '5_Time'] --> 1_Left lift 3.29119 conf 78.3574
+['0.5_Evaluation', '0.5_Satisfaction', '5_Time', '0_Promotion'] --> 1_Left lift 3.30085 conf 78.5874
+['0.5_Evaluation', '2_Project'] --> 1_Left lift 3.36018 conf 80.0
+['2_Project', '0.75_Evaluation', '5_Time', '0_Accident'] --> 1_Left lift 3.36862 conf 80.201
+['0.5_Evaluation', '0.5_Satisfaction', '5_Time', '0_Accident'] --> 1_Left lift 3.37222 conf 80.2867
+['0.25_Satisfaction', '1.0_Evaluation', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.38096 conf 80.4948
+['0.5_Satisfaction', '150_Hours', '5_Time'] --> 1_Left lift 3.38192 conf 80.5175
+['2_Project', '0.75_Evaluation', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.38233 conf 80.5274
+['0.25_Satisfaction', '1.0_Evaluation', '5_Time', '0_Accident'] --> 1_Left lift 3.38329 conf 80.5503
+['0.5_Evaluation', '0.5_Satisfaction', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.38351 conf 80.5556
+['0.5_Satisfaction', '150_Hours', '5_Time', '0_Promotion'] --> 1_Left lift 3.39039 conf 80.7192
+['0.5_Evaluation', '2_Project', '0_Promotion'] --> 1_Left lift 3.40625 conf 81.0968
+['7_Project', '1.0_Evaluation'] --> 1_Left lift 3.41514 conf 81.3084
+['7_Project', '1.0_Evaluation', '0_Promotion'] --> 1_Left lift 3.43547 conf 81.7925
+['7_Project', '0.25_Satisfaction'] --> 1_Left lift 3.44018 conf 81.9048
+['2_Project', '150_Hours'] --> 1_Left lift 3.46311 conf 82.4506
+['7_Project', '0.25_Satisfaction', '0_Promotion'] --> 1_Left lift 3.46448 conf 82.4832
+['0.5_Evaluation', '2_Project', '0_Accident'] --> 1_Left lift 3.46636 conf 82.5279
+['0.5_Satisfaction', '150_Hours', '5_Time', '0_Accident'] --> 1_Left lift 3.48019 conf 82.8571
+['0.5_Evaluation', '2_Project', '0_Accident', '0_Promotion'] --> 1_Left lift 3.4835 conf 82.936
+['0.5_Satisfaction', '150_Hours', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.48984 conf 83.087
+['2_Project', '150_Hours', '0_Promotion'] --> 1_Left lift 3.49179 conf 83.1335
+['2_Project', '150_Hours', '0_Accident'] --> 1_Left lift 3.53796 conf 84.2327
+['2_Project', '150_Hours', '0_Accident', '0_Promotion'] --> 1_Left lift 3.55129 conf 84.5501
+['7_Project', '1.0_Evaluation', '0_Accident'] --> 1_Left lift 3.55436 conf 84.6232
+['7_Project', '1.0_Evaluation', '0_Accident', '0_Promotion'] --> 1_Left lift 3.55602 conf 84.6626
+['7_Project', '0.25_Satisfaction', '0_Accident'] --> 1_Left lift 3.55636 conf 84.6708
+['7_Project', '0.25_Satisfaction', '0_Accident', '0_Promotion'] --> 1_Left lift 3.5728 conf 85.0622
+['2_Project', '0.5_Satisfaction'] --> 1_Left lift 3.6164 conf 86.1002
+['2_Project', '0.5_Satisfaction', '0_Promotion'] --> 1_Left lift 3.63095 conf 86.4465
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation', '0_Promotion'] --> 1_Left lift 3.63635 conf 86.5751
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation'] --> 1_Left lift 3.63667 conf 86.5828
+['7_Project', '1.0_Evaluation', '5_Time'] --> 1_Left lift 3.64275 conf 86.7275
+['7_Project', '0.25_Satisfaction', '5_Time'] --> 1_Left lift 3.65441 conf 87.0051
+['0.5_Evaluation', '2_Project', '5_Time'] --> 1_Left lift 3.66079 conf 87.1571
+['7_Project', '1.0_Evaluation', '5_Time', '0_Promotion'] --> 1_Left lift 3.66714 conf 87.3081
+['7_Project', '0.25_Satisfaction', '5_Time', '0_Promotion'] --> 1_Left lift 3.66768 conf 87.3211
+['0.5_Evaluation', '2_Project', '5_Time', '0_Promotion'] --> 1_Left lift 3.67586 conf 87.5158
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation', '0_Accident'] --> 1_Left lift 3.69807 conf 88.0447
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation', '0_Accident', '0_Promotion'] --> 1_Left lift 3.69997 conf 88.0899
+['2_Project', '0.5_Satisfaction', '0_Accident'] --> 1_Left lift 3.70473 conf 88.2033
+['2_Project', '150_Hours', '5_Time'] --> 1_Left lift 3.70629 conf 88.2403
+['2_Project', '0.5_Satisfaction', '0_Accident', '0_Promotion'] --> 1_Left lift 3.70879 conf 88.2998
+['2_Project', '150_Hours', '5_Time', '0_Promotion'] --> 1_Left lift 3.71133 conf 88.3602
+['0.5_Evaluation', '2_Project', '5_Time', '0_Accident'] --> 1_Left lift 3.71429 conf 88.4309
+['7_Project', '0.25_Satisfaction', '5_Time', '0_Accident'] --> 1_Left lift 3.73151 conf 88.8407
+['7_Project', '0.25_Satisfaction', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.73404 conf 88.901
+['2_Project', '150_Hours', '5_Time', '0_Accident'] --> 1_Left lift 3.75315 conf 89.356
+['7_Project', '1.0_Evaluation', '5_Time', '0_Accident'] --> 1_Left lift 3.75858 conf 89.4852
+['2_Project', '150_Hours', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.75869 conf 89.4879
+['7_Project', '1.0_Evaluation', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.76126 conf 89.549
+['0.5_Evaluation', '2_Project', '0.5_Satisfaction'] --> 1_Left lift 3.79709 conf 90.4021
+['2_Project', '0.5_Satisfaction', '5_Time'] --> 1_Left lift 3.80614 conf 90.6176
+['2_Project', '0.5_Satisfaction', '5_Time', '0_Promotion'] --> 1_Left lift 3.80787 conf 90.6587
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation', '5_Time', '0_Promotion'] --> 1_Left lift 3.81796 conf 90.899
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation', '5_Time'] --> 1_Left lift 3.82091 conf 90.9692
+['0.5_Evaluation', '2_Project', '0.5_Satisfaction', '0_Promotion'] --> 1_Left lift 3.83451 conf 91.2929
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation'] --> 1_Left lift 3.85249 conf 91.7211
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation', '0_Promotion'] --> 1_Left lift 3.85979 conf 91.8949
+['2_Project', '0.5_Satisfaction', '5_Time', '0_Accident'] --> 1_Left lift 3.86527 conf 92.0253
+['2_Project', '0.5_Satisfaction', '150_Hours'] --> 1_Left lift 3.86628 conf 92.0495
+['2_Project', '0.5_Satisfaction', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.86828 conf 92.0969
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.87409 conf 92.2353
+['2_Project', '0.5_Satisfaction', '0.75_Evaluation', '5_Time', '0_Accident'] --> 1_Left lift 3.87562 conf 92.2717
+['2_Project', '0.5_Satisfaction', '150_Hours', '0_Promotion'] --> 1_Left lift 3.88605 conf 92.52
+['2_Project', '0.5_Satisfaction', '150_Hours', '0_Accident'] --> 1_Left lift 3.9142 conf 93.1903
+['2_Project', '0.5_Satisfaction', '150_Hours', '0_Accident', '0_Promotion'] --> 1_Left lift 3.92073 conf 93.3458
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation', '0_Accident', '0_Promotion'] --> 1_Left lift 3.93526 conf 93.6916
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation', '0_Accident'] --> 1_Left lift 3.93618 conf 93.7136
+['2_Project', '0.5_Satisfaction', '150_Hours', '5_Time'] --> 1_Left lift 3.9536 conf 94.1283
+['2_Project', '0.5_Satisfaction', '150_Hours', '5_Time', '0_Promotion'] --> 1_Left lift 3.9601 conf 94.2831
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation', '5_Time'] --> 1_Left lift 3.96399 conf 94.3757
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation', '5_Time', '0_Promotion'] --> 1_Left lift 3.97216 conf 94.5701
+['2_Project', '0.5_Satisfaction', '150_Hours', '5_Time', '0_Accident'] --> 1_Left lift 3.98862 conf 94.962
+['2_Project', '0.5_Satisfaction', '150_Hours', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 3.99563 conf 95.1289
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation', '5_Time', '0_Accident', '0_Promotion'] --> 1_Left lift 4.01433 conf 95.5742
+['7_Project', '0.25_Satisfaction', '1.0_Evaluation', '5_Time', '0_Accident'] --> 1_Left lift 4.01499 conf 95.59
