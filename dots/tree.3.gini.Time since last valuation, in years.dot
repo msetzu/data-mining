@@ -1,0 +1,38 @@
+digraph Tree {
+node [shape=box, style="rounded", color="black", fontname=helvetica] ;
+graph [ranksep=equally, splines=polyline] ;
+edge [fontname=helvetica] ;
+0 [label="time_spend_company <= 0.5\ngini = 0.738\nsamples = 100.0%\nvalue = [0.186, 0.417, 0.196, 0.108, 0.059, 0.021, 0.007, 0.003\n0.002, 0.001]"] ;
+1 [label="satisfaction_level <= 0.5\ngini = 0.569\nsamples = 64.4%\nvalue = [0.287, 0.573, 0.14, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="left <= 0.5\ngini = 0.539\nsamples = 21.4%\nvalue = [0.358, 0.572, 0.07, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]"] ;
+1 -> 2 ;
+3 [label="gini = 0.591\nsamples = 10.9%\nvalue = [0.357, 0.515, 0.128, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+2 -> 3 ;
+4 [label="gini = 0.472\nsamples = 10.5%\nvalue = [0.359, 0.631, 0.009, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+2 -> 4 ;
+5 [label="promotion_last_5years <= 0.5\ngini = 0.577\nsamples = 43.0%\nvalue = [0.251, 0.574, 0.174, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+1 -> 5 ;
+6 [label="gini = 0.577\nsamples = 42.1%\nvalue = [0.253, 0.574, 0.173, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+5 -> 6 ;
+7 [label="gini = 0.556\nsamples = 0.9%\nvalue = [0.167, 0.602, 0.231, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+5 -> 7 ;
+8 [label="time_spend_company <= 1.5\ngini = 0.77\nsamples = 35.6%\nvalue = [0.003, 0.133, 0.298, 0.302, 0.166, 0.059, 0.02, 0.009\n0.006, 0.003]"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="left <= 0.5\ngini = 0.714\nsamples = 27.1%\nvalue = [0.004, 0.167, 0.352, 0.34, 0.137, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+8 -> 9 ;
+10 [label="gini = 0.688\nsamples = 15.5%\nvalue = [0.007, 0.268, 0.402, 0.277, 0.047, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+9 -> 10 ;
+11 [label="gini = 0.67\nsamples = 11.6%\nvalue = [0.0, 0.031, 0.287, 0.424, 0.259, 0.0, 0.0, 0.0, 0.0\n0.0]"] ;
+9 -> 11 ;
+12 [label="left <= 0.5\ngini = 0.813\nsamples = 8.5%\nvalue = [0.0, 0.026, 0.125, 0.184, 0.257, 0.249, 0.083, 0.038\n0.025, 0.014]"] ;
+8 -> 12 ;
+13 [label="gini = 0.831\nsamples = 7.1%\nvalue = [0.0, 0.031, 0.144, 0.211, 0.225, 0.197, 0.1, 0.046\n0.029, 0.016]"] ;
+12 -> 13 ;
+14 [label="gini = 0.557\nsamples = 1.4%\nvalue = [0.0, 0.0, 0.024, 0.042, 0.419, 0.515, 0.0, 0.0, 0.0\n0.0]"] ;
+12 -> 14 ;
+{rank=same ; 0} ;
+{rank=same ; 1; 8} ;
+{rank=same ; 2; 5; 9; 12} ;
+{rank=same ; 3; 4; 6; 7; 10; 11; 13; 14} ;
+}

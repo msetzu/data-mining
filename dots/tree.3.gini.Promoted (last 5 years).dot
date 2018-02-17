@@ -1,0 +1,38 @@
+digraph Tree {
+node [shape=box, style="rounded", color="black", fontname=helvetica] ;
+graph [ranksep=equally, splines=polyline] ;
+edge [fontname=helvetica] ;
+0 [label="time_spend_company <= 1.5\ngini = 0.041\nsamples = 100.0%\nvalue = [0.979, 0.021]"] ;
+1 [label="salary <= 1.5\ngini = 0.034\nsamples = 91.5%\nvalue = [0.983, 0.017]"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="salary <= 0.5\ngini = 0.023\nsamples = 52.6%\nvalue = [0.989, 0.011]"] ;
+1 -> 2 ;
+3 [label="gini = 0.063\nsamples = 7.0%\nvalue = [0.968, 0.032]"] ;
+2 -> 3 ;
+4 [label="gini = 0.016\nsamples = 45.7%\nvalue = [0.992, 0.008]"] ;
+2 -> 4 ;
+5 [label="left <= 0.5\ngini = 0.048\nsamples = 38.9%\nvalue = [0.975, 0.025]"] ;
+1 -> 5 ;
+6 [label="gini = 0.059\nsamples = 30.6%\nvalue = [0.969, 0.031]"] ;
+5 -> 6 ;
+7 [label="gini = 0.008\nsamples = 8.3%\nvalue = [0.996, 0.004]"] ;
+5 -> 7 ;
+8 [label="salary <= 0.5\ngini = 0.118\nsamples = 8.5%\nvalue = [0.937, 0.063]"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="satisfaction_level <= 0.5\ngini = 0.338\nsamples = 1.2%\nvalue = [0.785, 0.215]"] ;
+8 -> 9 ;
+10 [label="gini = 0.308\nsamples = 0.5%\nvalue = [0.81, 0.19]"] ;
+9 -> 10 ;
+11 [label="gini = 0.359\nsamples = 0.7%\nvalue = [0.765, 0.235]"] ;
+9 -> 11 ;
+12 [label="left <= 0.5\ngini = 0.073\nsamples = 7.3%\nvalue = [0.962, 0.038]"] ;
+8 -> 12 ;
+13 [label="gini = 0.089\nsamples = 5.9%\nvalue = [0.953, 0.047]"] ;
+12 -> 13 ;
+14 [label="gini = 0.0\nsamples = 1.4%\nvalue = [1.0, 0.0]"] ;
+12 -> 14 ;
+{rank=same ; 0} ;
+{rank=same ; 1; 8} ;
+{rank=same ; 2; 5; 9; 12} ;
+{rank=same ; 3; 4; 6; 7; 10; 11; 13; 14} ;
+}

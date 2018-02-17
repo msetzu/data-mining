@@ -1,0 +1,34 @@
+digraph Tree {
+node [shape=box, style="rounded", color="black", fontname=helvetica] ;
+graph [ranksep=equally, splines=polyline] ;
+edge [fontname=helvetica] ;
+0 [label="last_evaluation <= 3.5\nentropy = 1.222\nsamples = 100.0%\nvalue = [0.644, 0.271, 0.085]"] ;
+1 [label="last_evaluation <= 2.5\nentropy = 0.789\nsamples = 79.8%\nvalue = [0.806, 0.178, 0.016]"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="last_evaluation <= 1.5\nentropy = 0.425\nsamples = 60.2%\nvalue = [0.919, 0.077, 0.004]"] ;
+1 -> 2 ;
+3 [label="entropy = 0.052\nsamples = 18.6%\nvalue = [0.994, 0.006, 0.0]"] ;
+2 -> 3 ;
+4 [label="entropy = 0.542\nsamples = 41.7%\nvalue = [0.886, 0.109, 0.005]"] ;
+2 -> 4 ;
+5 [label="left <= 0.5\nentropy = 1.248\nsamples = 19.6%\nvalue = [0.458, 0.488, 0.054]"] ;
+1 -> 5 ;
+6 [label="entropy = 1.258\nsamples = 16.1%\nvalue = [0.548, 0.388, 0.064]"] ;
+5 -> 6 ;
+7 [label="entropy = 0.342\nsamples = 3.5%\nvalue = [0.045, 0.945, 0.009]"] ;
+5 -> 7 ;
+8 [label="last_evaluation <= 5.5\nentropy = 0.941\nsamples = 20.2%\nvalue = [0.0, 0.642, 0.358]"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="left <= 0.5\nentropy = 0.768\nsamples = 16.7%\nvalue = [0.0, 0.776, 0.224]"] ;
+8 -> 9 ;
+10 [label="entropy = 0.959\nsamples = 8.1%\nvalue = [0.0, 0.618, 0.382]"] ;
+9 -> 10 ;
+11 [label="entropy = 0.384\nsamples = 8.6%\nvalue = [0.0, 0.925, 0.075]"] ;
+9 -> 11 ;
+12 [label="entropy = 0.0\nsamples = 3.5%\nvalue = [0.0, 0.0, 1.0]"] ;
+8 -> 12 ;
+{rank=same ; 0} ;
+{rank=same ; 1; 8} ;
+{rank=same ; 2; 5; 9} ;
+{rank=same ; 3; 4; 6; 7; 10; 11; 12} ;
+}
