@@ -1,0 +1,7 @@
+digraph Tree {
+node [shape=box, style="rounded", color="black", fontname=helvetica] ;
+graph [ranksep=equally, splines=polyline] ;
+edge [fontname=helvetica] ;
+0 [label="entropy = 0.0\nsamples = 100.0%\nvalue = 11999.0"] ;
+{rank=same ; 0} ;
+}

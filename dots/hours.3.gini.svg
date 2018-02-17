@@ -1,0 +1,295 @@
+<svg width="1973pt" height="411pt" viewBox="0.00 0.00 1973.00 411.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph1" class="graph" transform="scale(1 1) rotate(0) translate(4 407)">
+<title>Tree</title>
+<polygon fill="white" stroke="white" points="-4,5 -4,-407 1970,-407 1970,5 -4,5"></polygon>
+<!-- 0 -->
+<g id="node1" class="node"><title>0</title>
+<polyline fill="none" stroke="black" points="1088.13,-402.7 883.872,-402.7 "></polyline>
+<path fill="none" stroke="black" d="M883.872,-402.7C877.872,-402.7 871.872,-396.7 871.872,-390.7"></path>
+<polyline fill="none" stroke="black" points="871.872,-390.7 871.872,-339.3 "></polyline>
+<path fill="none" stroke="black" d="M871.872,-339.3C871.872,-333.3 877.872,-327.3 883.872,-327.3"></path>
+<polyline fill="none" stroke="black" points="883.872,-327.3 1088.13,-327.3 "></polyline>
+<path fill="none" stroke="black" d="M1088.13,-327.3C1094.13,-327.3 1100.13,-333.3 1100.13,-339.3"></path>
+<polyline fill="none" stroke="black" points="1100.13,-339.3 1100.13,-390.7 "></polyline>
+<path fill="none" stroke="black" d="M1100.13,-390.7C1100.13,-396.7 1094.13,-402.7 1088.13,-402.7"></path>
+<text text-anchor="middle" x="986" y="-386" font-family="Helvetica,sans-Serif" font-size="14.00">number_project &lt;= 2.5</text>
+<text text-anchor="middle" x="986" y="-369.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.741</text>
+<text text-anchor="middle" x="986" y="-352.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 100.0%</text>
+<text text-anchor="middle" x="986" y="-335.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.29, 0.262, 0.169, 0.279]</text>
+</g>
+<!-- 1 -->
+<g id="node2" class="node"><title>1</title>
+<polyline fill="none" stroke="black" points="907.965,-290.7 696.035,-290.7 "></polyline>
+<path fill="none" stroke="black" d="M696.035,-290.7C690.035,-290.7 684.035,-284.7 684.035,-278.7"></path>
+<polyline fill="none" stroke="black" points="684.035,-278.7 684.035,-227.3 "></polyline>
+<path fill="none" stroke="black" d="M684.035,-227.3C684.035,-221.3 690.035,-215.3 696.035,-215.3"></path>
+<polyline fill="none" stroke="black" points="696.035,-215.3 907.965,-215.3 "></polyline>
+<path fill="none" stroke="black" d="M907.965,-215.3C913.965,-215.3 919.965,-221.3 919.965,-227.3"></path>
+<polyline fill="none" stroke="black" points="919.965,-227.3 919.965,-278.7 "></polyline>
+<path fill="none" stroke="black" d="M919.965,-278.7C919.965,-284.7 913.965,-290.7 907.965,-290.7"></path>
+<text text-anchor="middle" x="802" y="-274" font-family="Helvetica,sans-Serif" font-size="14.00">left &lt;= 0.5</text>
+<text text-anchor="middle" x="802" y="-257.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.409</text>
+<text text-anchor="middle" x="802" y="-240.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 16.0%</text>
+<text text-anchor="middle" x="802" y="-223.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.754, 0.112, 0.055, 0.078]</text>
+</g>
+<!-- 0&#45;&gt;1 -->
+<g id="edge2" class="edge"><title>0-&gt;1</title>
+<path fill="none" stroke="black" d="M924.731,-327.372C907.905,-317.313 889.53,-306.328 872.243,-295.993"></path>
+<polygon fill="black" stroke="black" points="873.694,-292.783 863.315,-290.656 870.103,-298.791 873.694,-292.783"></polygon>
+<text text-anchor="middle" x="869.417" y="-310.7" font-family="Helvetica,sans-Serif" font-size="14.00">True</text>
+</g>
+<!-- 8 -->
+<g id="node16" class="node"><title>8</title>
+<polyline fill="none" stroke="black" points="1272.13,-290.7 1067.87,-290.7 "></polyline>
+<path fill="none" stroke="black" d="M1067.87,-290.7C1061.87,-290.7 1055.87,-284.7 1055.87,-278.7"></path>
+<polyline fill="none" stroke="black" points="1055.87,-278.7 1055.87,-227.3 "></polyline>
+<path fill="none" stroke="black" d="M1055.87,-227.3C1055.87,-221.3 1061.87,-215.3 1067.87,-215.3"></path>
+<polyline fill="none" stroke="black" points="1067.87,-215.3 1272.13,-215.3 "></polyline>
+<path fill="none" stroke="black" d="M1272.13,-215.3C1278.13,-215.3 1284.13,-221.3 1284.13,-227.3"></path>
+<polyline fill="none" stroke="black" points="1284.13,-227.3 1284.13,-278.7 "></polyline>
+<path fill="none" stroke="black" d="M1284.13,-278.7C1284.13,-284.7 1278.13,-290.7 1272.13,-290.7"></path>
+<text text-anchor="middle" x="1170" y="-274" font-family="Helvetica,sans-Serif" font-size="14.00">left &lt;= 0.5</text>
+<text text-anchor="middle" x="1170" y="-257.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.738</text>
+<text text-anchor="middle" x="1170" y="-240.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 84.0%</text>
+<text text-anchor="middle" x="1170" y="-223.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.202, 0.291, 0.19, 0.317]</text>
+</g>
+<!-- 0&#45;&gt;8 -->
+<g id="edge16" class="edge"><title>0-&gt;8</title>
+<path fill="none" stroke="black" d="M1047.27,-327.372C1064.09,-317.313 1082.47,-306.328 1099.76,-295.993"></path>
+<polygon fill="black" stroke="black" points="1101.9,-298.791 1108.68,-290.656 1098.31,-292.783 1101.9,-298.791"></polygon>
+<text text-anchor="middle" x="1102.58" y="-310.7" font-family="Helvetica,sans-Serif" font-size="14.00">False</text>
+</g>
+<!-- 2 -->
+<g id="node4" class="node"><title>2</title>
+<polyline fill="none" stroke="black" points="475.128,-178.7 270.872,-178.7 "></polyline>
+<path fill="none" stroke="black" d="M270.872,-178.7C264.872,-178.7 258.872,-172.7 258.872,-166.7"></path>
+<polyline fill="none" stroke="black" points="258.872,-166.7 258.872,-115.3 "></polyline>
+<path fill="none" stroke="black" d="M258.872,-115.3C258.872,-109.3 264.872,-103.3 270.872,-103.3"></path>
+<polyline fill="none" stroke="black" points="270.872,-103.3 475.128,-103.3 "></polyline>
+<path fill="none" stroke="black" d="M475.128,-103.3C481.128,-103.3 487.128,-109.3 487.128,-115.3"></path>
+<polyline fill="none" stroke="black" points="487.128,-115.3 487.128,-166.7 "></polyline>
+<path fill="none" stroke="black" d="M487.128,-166.7C487.128,-172.7 481.128,-178.7 475.128,-178.7"></path>
+<text text-anchor="middle" x="373" y="-162" font-family="Helvetica,sans-Serif" font-size="14.00">satisfaction_level &lt;= 0.5</text>
+<text text-anchor="middle" x="373" y="-145.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.723</text>
+<text text-anchor="middle" x="373" y="-128.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 5.6%</text>
+<text text-anchor="middle" x="373" y="-111.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.356, 0.301, 0.153, 0.19]</text>
+</g>
+<!-- 1&#45;&gt;2 -->
+<g id="edge4" class="edge"><title>1-&gt;2</title>
+<path fill="none" stroke="black" d="M683.922,-221.724C625.89,-206.844 555.966,-188.914 497.139,-173.83"></path>
+<polygon fill="black" stroke="black" points="497.977,-170.432 487.421,-171.339 496.238,-177.213 497.977,-170.432"></polygon>
+</g>
+<!-- 5 -->
+<g id="node10" class="node"><title>5</title>
+<polyline fill="none" stroke="black" points="907.965,-178.7 696.035,-178.7 "></polyline>
+<path fill="none" stroke="black" d="M696.035,-178.7C690.035,-178.7 684.035,-172.7 684.035,-166.7"></path>
+<polyline fill="none" stroke="black" points="684.035,-166.7 684.035,-115.3 "></polyline>
+<path fill="none" stroke="black" d="M684.035,-115.3C684.035,-109.3 690.035,-103.3 696.035,-103.3"></path>
+<polyline fill="none" stroke="black" points="696.035,-103.3 907.965,-103.3 "></polyline>
+<path fill="none" stroke="black" d="M907.965,-103.3C913.965,-103.3 919.965,-109.3 919.965,-115.3"></path>
+<polyline fill="none" stroke="black" points="919.965,-115.3 919.965,-166.7 "></polyline>
+<path fill="none" stroke="black" d="M919.965,-166.7C919.965,-172.7 913.965,-178.7 907.965,-178.7"></path>
+<text text-anchor="middle" x="802" y="-162" font-family="Helvetica,sans-Serif" font-size="14.00">last_evaluation &lt;= 1.5</text>
+<text text-anchor="middle" x="802" y="-145.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.061</text>
+<text text-anchor="middle" x="802" y="-128.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 10.4%</text>
+<text text-anchor="middle" x="802" y="-111.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.969, 0.011, 0.002, 0.018]</text>
+</g>
+<!-- 1&#45;&gt;5 -->
+<g id="edge10" class="edge"><title>1-&gt;5</title>
+<path fill="none" stroke="black" d="M802,-215.372C802,-206.927 802,-197.829 802,-189.011"></path>
+<polygon fill="black" stroke="black" points="805.5,-188.843 802,-178.844 798.5,-188.844 805.5,-188.843"></polygon>
+</g>
+<!-- 3 -->
+<g id="node6" class="node"><title>3</title>
+<polyline fill="none" stroke="black" points="223.965,-58.4014 12.0352,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M12.0352,-58.4014C6.03519,-58.4014 0.035195,-52.4014 0.035195,-46.4014"></path>
+<polyline fill="none" stroke="black" points="0.035195,-46.4014 0.035195,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M0.035195,-11.5986C0.035195,-5.59862 6.03519,0.401379 12.0352,0.401379"></path>
+<polyline fill="none" stroke="black" points="12.0352,0.401379 223.965,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M223.965,0.401379C229.965,0.401379 235.965,-5.59862 235.965,-11.5986"></path>
+<polyline fill="none" stroke="black" points="235.965,-11.5986 235.965,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M235.965,-46.4014C235.965,-52.4014 229.965,-58.4014 223.965,-58.4014"></path>
+<text text-anchor="middle" x="118" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.677</text>
+<text text-anchor="middle" x="118" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 2.5%</text>
+<text text-anchor="middle" x="118" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.434, 0.323, 0.101, 0.141]</text>
+</g>
+<!-- 2&#45;&gt;3 -->
+<g id="edge6" class="edge"><title>2-&gt;3</title>
+<path fill="none" stroke="black" d="M288.089,-103.372C257.366,-90.1188 222.917,-75.2582 193.097,-62.3948"></path>
+<polygon fill="black" stroke="black" points="194.157,-59.0403 183.589,-58.2931 191.384,-65.4678 194.157,-59.0403"></polygon>
+</g>
+<!-- 4 -->
+<g id="node8" class="node"><title>4</title>
+<polyline fill="none" stroke="black" points="478.965,-58.4014 267.035,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M267.035,-58.4014C261.035,-58.4014 255.035,-52.4014 255.035,-46.4014"></path>
+<polyline fill="none" stroke="black" points="255.035,-46.4014 255.035,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M255.035,-11.5986C255.035,-5.59862 261.035,0.401379 267.035,0.401379"></path>
+<polyline fill="none" stroke="black" points="267.035,0.401379 478.965,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M478.965,0.401379C484.965,0.401379 490.965,-5.59862 490.965,-11.5986"></path>
+<polyline fill="none" stroke="black" points="490.965,-11.5986 490.965,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M490.965,-46.4014C490.965,-52.4014 484.965,-58.4014 478.965,-58.4014"></path>
+<text text-anchor="middle" x="373" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.744</text>
+<text text-anchor="middle" x="373" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 3.1%</text>
+<text text-anchor="middle" x="373" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.293, 0.283, 0.195, 0.229]</text>
+</g>
+<!-- 2&#45;&gt;4 -->
+<g id="edge8" class="edge"><title>2-&gt;4</title>
+<path fill="none" stroke="black" d="M373,-103.372C373,-92.1747 373,-79.83 373,-68.5119"></path>
+<polygon fill="black" stroke="black" points="376.5,-68.4685 373,-58.4686 369.5,-68.4686 376.5,-68.4685"></polygon>
+</g>
+<!-- 6 -->
+<g id="node12" class="node"><title>6</title>
+<polyline fill="none" stroke="black" points="718.29,-58.4014 521.71,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M521.71,-58.4014C515.71,-58.4014 509.71,-52.4014 509.71,-46.4014"></path>
+<polyline fill="none" stroke="black" points="509.71,-46.4014 509.71,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M509.71,-11.5986C509.71,-5.59862 515.71,0.401379 521.71,0.401379"></path>
+<polyline fill="none" stroke="black" points="521.71,0.401379 718.29,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M718.29,0.401379C724.29,0.401379 730.29,-5.59862 730.29,-11.5986"></path>
+<polyline fill="none" stroke="black" points="730.29,-11.5986 730.29,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M730.29,-46.4014C730.29,-52.4014 724.29,-58.4014 718.29,-58.4014"></path>
+<text text-anchor="middle" x="620" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.031</text>
+<text text-anchor="middle" x="620" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 3.7%</text>
+<text text-anchor="middle" x="620" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.984, 0.004, 0.0, 0.011]</text>
+</g>
+<!-- 5&#45;&gt;6 -->
+<g id="edge12" class="edge"><title>5-&gt;6</title>
+<path fill="none" stroke="black" d="M741.397,-103.372C720.134,-90.5204 696.369,-76.1574 675.542,-63.5696"></path>
+<polygon fill="black" stroke="black" points="677.181,-60.4704 666.812,-58.2931 673.56,-66.4612 677.181,-60.4704"></polygon>
+</g>
+<!-- 7 -->
+<g id="node14" class="node"><title>7</title>
+<polyline fill="none" stroke="black" points="965.128,-58.4014 760.872,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M760.872,-58.4014C754.872,-58.4014 748.872,-52.4014 748.872,-46.4014"></path>
+<polyline fill="none" stroke="black" points="748.872,-46.4014 748.872,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M748.872,-11.5986C748.872,-5.59862 754.872,0.401379 760.872,0.401379"></path>
+<polyline fill="none" stroke="black" points="760.872,0.401379 965.128,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M965.128,0.401379C971.128,0.401379 977.128,-5.59862 977.128,-11.5986"></path>
+<polyline fill="none" stroke="black" points="977.128,-11.5986 977.128,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M977.128,-46.4014C977.128,-52.4014 971.128,-58.4014 965.128,-58.4014"></path>
+<text text-anchor="middle" x="863" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.077</text>
+<text text-anchor="middle" x="863" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 6.7%</text>
+<text text-anchor="middle" x="863" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.96, 0.015, 0.004, 0.021]</text>
+</g>
+<!-- 5&#45;&gt;7 -->
+<g id="edge14" class="edge"><title>5-&gt;7</title>
+<path fill="none" stroke="black" d="M822.312,-103.372C828.711,-91.8319 835.787,-79.0732 842.218,-67.4754"></path>
+<polygon fill="black" stroke="black" points="845.424,-68.9113 847.213,-58.4686 839.302,-65.5165 845.424,-68.9113"></polygon>
+</g>
+<!-- 9 -->
+<g id="node18" class="node"><title>9</title>
+<polyline fill="none" stroke="black" points="1272.13,-178.7 1067.87,-178.7 "></polyline>
+<path fill="none" stroke="black" d="M1067.87,-178.7C1061.87,-178.7 1055.87,-172.7 1055.87,-166.7"></path>
+<polyline fill="none" stroke="black" points="1055.87,-166.7 1055.87,-115.3 "></polyline>
+<path fill="none" stroke="black" d="M1055.87,-115.3C1055.87,-109.3 1061.87,-103.3 1067.87,-103.3"></path>
+<polyline fill="none" stroke="black" points="1067.87,-103.3 1272.13,-103.3 "></polyline>
+<path fill="none" stroke="black" d="M1272.13,-103.3C1278.13,-103.3 1284.13,-109.3 1284.13,-115.3"></path>
+<polyline fill="none" stroke="black" points="1284.13,-115.3 1284.13,-166.7 "></polyline>
+<path fill="none" stroke="black" d="M1284.13,-166.7C1284.13,-172.7 1278.13,-178.7 1272.13,-178.7"></path>
+<text text-anchor="middle" x="1170" y="-162" font-family="Helvetica,sans-Serif" font-size="14.00">time_spend_company &lt;= 3.5</text>
+<text text-anchor="middle" x="1170" y="-145.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.738</text>
+<text text-anchor="middle" x="1170" y="-128.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 70.5%</text>
+<text text-anchor="middle" x="1170" y="-111.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.235, 0.339, 0.19, 0.236]</text>
+</g>
+<!-- 8&#45;&gt;9 -->
+<g id="edge18" class="edge"><title>8-&gt;9</title>
+<path fill="none" stroke="black" d="M1170,-215.372C1170,-206.927 1170,-197.829 1170,-189.011"></path>
+<polygon fill="black" stroke="black" points="1173.5,-188.843 1170,-178.844 1166.5,-188.844 1173.5,-188.843"></polygon>
+</g>
+<!-- 12 -->
+<g id="node24" class="node"><title>12</title>
+<polyline fill="none" stroke="black" points="1713.96,-178.7 1502.04,-178.7 "></polyline>
+<path fill="none" stroke="black" d="M1502.04,-178.7C1496.04,-178.7 1490.04,-172.7 1490.04,-166.7"></path>
+<polyline fill="none" stroke="black" points="1490.04,-166.7 1490.04,-115.3 "></polyline>
+<path fill="none" stroke="black" d="M1490.04,-115.3C1490.04,-109.3 1496.04,-103.3 1502.04,-103.3"></path>
+<polyline fill="none" stroke="black" points="1502.04,-103.3 1713.96,-103.3 "></polyline>
+<path fill="none" stroke="black" d="M1713.96,-103.3C1719.96,-103.3 1725.96,-109.3 1725.96,-115.3"></path>
+<polyline fill="none" stroke="black" points="1725.96,-115.3 1725.96,-166.7 "></polyline>
+<path fill="none" stroke="black" d="M1725.96,-166.7C1725.96,-172.7 1719.96,-178.7 1713.96,-178.7"></path>
+<text text-anchor="middle" x="1608" y="-162" font-family="Helvetica,sans-Serif" font-size="14.00">number_project &lt;= 5.5</text>
+<text text-anchor="middle" x="1608" y="-145.2" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.412</text>
+<text text-anchor="middle" x="1608" y="-128.4" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 13.5%</text>
+<text text-anchor="middle" x="1608" y="-111.6" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.029, 0.039, 0.191, 0.741]</text>
+</g>
+<!-- 8&#45;&gt;12 -->
+<g id="edge24" class="edge"><title>8-&gt;12</title>
+<path fill="none" stroke="black" d="M1284.22,-223.314C1344.25,-208.238 1418.02,-189.711 1479.98,-174.152"></path>
+<polygon fill="black" stroke="black" points="1480.97,-177.511 1489.82,-171.681 1479.26,-170.722 1480.97,-177.511"></polygon>
+</g>
+<!-- 10 -->
+<g id="node20" class="node"><title>10</title>
+<polyline fill="none" stroke="black" points="1212.13,-58.4014 1007.87,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M1007.87,-58.4014C1001.87,-58.4014 995.872,-52.4014 995.872,-46.4014"></path>
+<polyline fill="none" stroke="black" points="995.872,-46.4014 995.872,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M995.872,-11.5986C995.872,-5.59862 1001.87,0.401379 1007.87,0.401379"></path>
+<polyline fill="none" stroke="black" points="1007.87,0.401379 1212.13,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M1212.13,0.401379C1218.13,0.401379 1224.13,-5.59862 1224.13,-11.5986"></path>
+<polyline fill="none" stroke="black" points="1224.13,-11.5986 1224.13,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M1224.13,-46.4014C1224.13,-52.4014 1218.13,-58.4014 1212.13,-58.4014"></path>
+<text text-anchor="middle" x="1110" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.736</text>
+<text text-anchor="middle" x="1110" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 49.7%</text>
+<text text-anchor="middle" x="1110" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.224, 0.35, 0.191, 0.234]</text>
+</g>
+<!-- 9&#45;&gt;10 -->
+<g id="edge20" class="edge"><title>9-&gt;10</title>
+<path fill="none" stroke="black" d="M1150.02,-103.372C1143.73,-91.8319 1136.77,-79.0732 1130.44,-67.4754"></path>
+<polygon fill="black" stroke="black" points="1133.39,-65.5715 1125.53,-58.4686 1127.24,-68.9235 1133.39,-65.5715"></polygon>
+</g>
+<!-- 11 -->
+<g id="node22" class="node"><title>11</title>
+<polyline fill="none" stroke="black" points="1459.13,-58.4014 1254.87,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M1254.87,-58.4014C1248.87,-58.4014 1242.87,-52.4014 1242.87,-46.4014"></path>
+<polyline fill="none" stroke="black" points="1242.87,-46.4014 1242.87,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M1242.87,-11.5986C1242.87,-5.59862 1248.87,0.401379 1254.87,0.401379"></path>
+<polyline fill="none" stroke="black" points="1254.87,0.401379 1459.13,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M1459.13,0.401379C1465.13,0.401379 1471.13,-5.59862 1471.13,-11.5986"></path>
+<polyline fill="none" stroke="black" points="1471.13,-11.5986 1471.13,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M1471.13,-46.4014C1471.13,-52.4014 1465.13,-58.4014 1459.13,-58.4014"></path>
+<text text-anchor="middle" x="1357" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.742</text>
+<text text-anchor="middle" x="1357" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 20.8%</text>
+<text text-anchor="middle" x="1357" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.26, 0.311, 0.188, 0.242]</text>
+</g>
+<!-- 9&#45;&gt;11 -->
+<g id="edge22" class="edge"><title>9-&gt;11</title>
+<path fill="none" stroke="black" d="M1232.27,-103.372C1254.21,-90.463 1278.75,-76.0291 1300.22,-63.4011"></path>
+<polygon fill="black" stroke="black" points="1302.06,-66.3801 1308.9,-58.2931 1298.51,-60.3466 1302.06,-66.3801"></polygon>
+</g>
+<!-- 13 -->
+<g id="node26" class="node"><title>13</title>
+<polyline fill="none" stroke="black" points="1713.96,-58.4014 1502.04,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M1502.04,-58.4014C1496.04,-58.4014 1490.04,-52.4014 1490.04,-46.4014"></path>
+<polyline fill="none" stroke="black" points="1490.04,-46.4014 1490.04,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M1490.04,-11.5986C1490.04,-5.59862 1496.04,0.401379 1502.04,0.401379"></path>
+<polyline fill="none" stroke="black" points="1502.04,0.401379 1713.96,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M1713.96,0.401379C1719.96,0.401379 1725.96,-5.59862 1725.96,-11.5986"></path>
+<polyline fill="none" stroke="black" points="1725.96,-11.5986 1725.96,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M1725.96,-46.4014C1725.96,-52.4014 1719.96,-58.4014 1713.96,-58.4014"></path>
+<text text-anchor="middle" x="1608" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.554</text>
+<text text-anchor="middle" x="1608" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 7.4%</text>
+<text text-anchor="middle" x="1608" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.036, 0.054, 0.336, 0.573]</text>
+</g>
+<!-- 12&#45;&gt;13 -->
+<g id="edge26" class="edge"><title>12-&gt;13</title>
+<path fill="none" stroke="black" d="M1608,-103.372C1608,-92.1747 1608,-79.83 1608,-68.5119"></path>
+<polygon fill="black" stroke="black" points="1611.5,-68.4685 1608,-58.4686 1604.5,-68.4686 1611.5,-68.4685"></polygon>
+</g>
+<!-- 14 -->
+<g id="node28" class="node"><title>14</title>
+<polyline fill="none" stroke="black" points="1953.29,-58.4014 1756.71,-58.4014 "></polyline>
+<path fill="none" stroke="black" d="M1756.71,-58.4014C1750.71,-58.4014 1744.71,-52.4014 1744.71,-46.4014"></path>
+<polyline fill="none" stroke="black" points="1744.71,-46.4014 1744.71,-11.5986 "></polyline>
+<path fill="none" stroke="black" d="M1744.71,-11.5986C1744.71,-5.59862 1750.71,0.401379 1756.71,0.401379"></path>
+<polyline fill="none" stroke="black" points="1756.71,0.401379 1953.29,0.401379 "></polyline>
+<path fill="none" stroke="black" d="M1953.29,0.401379C1959.29,0.401379 1965.29,-5.59862 1965.29,-11.5986"></path>
+<polyline fill="none" stroke="black" points="1965.29,-11.5986 1965.29,-46.4014 "></polyline>
+<path fill="none" stroke="black" d="M1965.29,-46.4014C1965.29,-52.4014 1959.29,-58.4014 1953.29,-58.4014"></path>
+<text text-anchor="middle" x="1855" y="-41.6" font-family="Helvetica,sans-Serif" font-size="14.00">gini = 0.108</text>
+<text text-anchor="middle" x="1855" y="-24.8" font-family="Helvetica,sans-Serif" font-size="14.00">samples = 6.1%</text>
+<text text-anchor="middle" x="1855" y="-8" font-family="Helvetica,sans-Serif" font-size="14.00">value = [0.02, 0.02, 0.015, 0.944]</text>
+</g>
+<!-- 12&#45;&gt;14 -->
+<g id="edge28" class="edge"><title>12-&gt;14</title>
+<path fill="none" stroke="black" d="M1690.25,-103.372C1720.01,-90.1188 1753.37,-75.2582 1782.26,-62.3948"></path>
+<polygon fill="black" stroke="black" points="1783.76,-65.5587 1791.47,-58.2931 1780.91,-59.1641 1783.76,-65.5587"></polygon>
+</g>
+</g>
+</svg>

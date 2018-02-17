@@ -145,7 +145,7 @@ def draw_distribution(hr, var, var_pretty_print):
     lgd = axes.legend(handles + [quantiles_patch], labels + ["Quartiles"], loc='lower center',
                       bbox_to_anchor=(.5, -.25), ncol=3)
     pp.title(str(var_pretty_print) + ': data distribution')
-    pp.savefig(str(var_pretty_print) + '.png', bbox_extra_artists=[lgd], bbox_inches='tight')
+    pp.savefig(str(var_pretty_print) + ".svg", bbox_extra_artists=[lgd], bbox_inches='tight')
 
 
 def draw_categorical_distribution(var_val, var_pretty_print, title):
@@ -172,7 +172,7 @@ def draw_categorical_distribution(var_val, var_pretty_print, title):
     pp.title(title)
 
     pp.tight_layout()
-    pp.savefig(str(title) + '.png')
+    pp.savefig(str(title) + ".svg")
 
 
 def draw_discrete_distribution(var_val, var_pretty_print, title):
@@ -194,7 +194,7 @@ def draw_discrete_distribution(var_val, var_pretty_print, title):
     axes.set_xticklabels(values, rotation=0)
 
     pp.tight_layout()
-    pp.savefig(str(var_pretty_print) + '.png')
+    pp.savefig(str(var_pretty_print) + ".svg")
 
 
 def draw_ordinal_distribution(var_val, var_pretty_print, title):
@@ -219,13 +219,13 @@ def draw_ordinal_distribution(var_val, var_pretty_print, title):
     pp.savefig(title + ".png")
 
 
-def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False):
+def draw_correlation_matrix(correlation_matrix, pretty_labels, title="Correlation matrix", normalised=False):
     figure, axes = pp.subplots()
 
     mask = np.tri(correlation_matrix.shape[0], k=-1)
     matrix = np.ma.array(correlation_matrix, mask=mask)  # mask out the lower triangle
     cmap_pale_pink.set_bad('w')
-    image = axes.imshow(matrix, cmap=cmap_pale_pink, interpolation='none')
+    image = axes.imshow(matrix, cmap=cmap_pale_pink, interpolation="nearest")
     pp.colorbar(image)
 
     axes.set_xticks(np.arange(0, correlation_matrix.shape[0], correlation_matrix.shape[0] * 1.0 / len(pretty_labels)))
@@ -240,16 +240,12 @@ def draw_correlation_matrix(correlation_matrix, pretty_labels, normalised=False)
     pp.tight_layout()
     pp.draw()
 
-    if not normalised:
-        axes.set_title('Correlation matrix', fontsize=12, fontweight='bold')
-        pp.savefig('Correlation matrix.png')
-        pp.savefig('Correlation matrix.svg')
-    else:
-        axes.set_title('Correlation matrix', fontsize=12, fontweight='bold')
-        pp.savefig('Correlation matrix for normalised data.png')
-        pp.savefig('Correlation matrix for normalised data.svg')
-
-    pp.show()
+    # if not normalised:
+    #     axes.set_title(title, fontsize=12, fontweight="bold")
+    # else:
+    #     axes.set_title(title + " (normalised)", fontsize=12, fontweight="bold")
+    #pp.show()
+    pp.savefig(title + ".svg")
 
 def draw_scatter_plot(var_x, var_y, var_x_pretty_print, var_y_pretty_print, title):
     """
@@ -328,7 +324,7 @@ def draw_discrete_distribution_stacked(vars, var_pretty_prints, title, ticks, le
         lgd = axes.legend(new_handles, new_labels, loc="best")
 
     pp.title(str(title))
-    pp.savefig(str(title) + '.png', bbox_extra_artists=[lgd], bbox_inches='tight')
+    pp.savefig(str(title) + ".svg", bbox_extra_artists=[lgd], bbox_inches='tight')
     return
 
 

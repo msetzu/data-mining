@@ -45,7 +45,7 @@ def cluster(hr):
     #     thread = threading.Thread(target=eps_growths, args=(dataset, clustering_var, "dbscan.eps." + title))
     #     threads.append(thread)
     #     thread.start()
-    eps_growths(hr.normal, correlated_labels[:-1], "dbscan.eps.graphs")
+    # eps_growths(hr.normal, correlated_labels[:-1], "dbscan.eps.graphs")
 
     # for dataset, clustering_var, title, start in zip(datasets, clustering_vars, titles, starts):
     #     thread = threading.Thread(target=cluster_dbscan, args=(dataset, clustering_var, title, start))

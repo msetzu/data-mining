@@ -1,0 +1,21 @@
+digraph Tree {
+node [shape=box, style="rounded", color="black", fontname=helvetica] ;
+graph [ranksep=equally, splines=polyline] ;
+edge [fontname=helvetica] ;
+0 [label="left <= 0.5\nentropy = 1.507\nsamples = 100.0%\nvalue = [0.368, 0.441, 0.191]"] ;
+1 [label="time_spend_company <= 0.5\nentropy = 1.479\nsamples = 76.1%\nvalue = [0.258, 0.519, 0.224]"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="entropy = 1.427\nsamples = 53.4%\nvalue = [0.204, 0.561, 0.236]"] ;
+1 -> 2 ;
+3 [label="entropy = 1.516\nsamples = 22.6%\nvalue = [0.386, 0.419, 0.195]"] ;
+1 -> 3 ;
+4 [label="last_evaluation <= 4.5\nentropy = 1.107\nsamples = 23.9%\nvalue = [0.718, 0.196, 0.085]"] ;
+0 -> 4 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+5 [label="entropy = 0.686\nsamples = 19.6%\nvalue = [0.863, 0.104, 0.033]"] ;
+4 -> 5 ;
+6 [label="entropy = 1.201\nsamples = 4.3%\nvalue = [0.06, 0.616, 0.324]"] ;
+4 -> 6 ;
+{rank=same ; 0} ;
+{rank=same ; 1; 4} ;
+{rank=same ; 2; 3; 5; 6} ;
+}
